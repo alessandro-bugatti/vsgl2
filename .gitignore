@@ -45,3 +45,16 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# Automatic documentation dir
+doc/
+# Personal applications dir
+myApps/
+
+# Generated files (.o, .exe)
+*.exe
+*.o
+
+# Unnecessary files related to CodeBlocks projects
+*.depend
+*.layout
