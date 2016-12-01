@@ -15,7 +15,7 @@ Main features:
 ## Lessons
 Very often programming library has a not so good documentation, sometimes because it is too difficult to follow, sometimes because it lacks in explaining fundamental parts.
 
-During the development of this library the idea is to add "lessons" to explain how to use the functionalities of this library through examples. 
+During the development of this library the idea is to add "lessons" to explain how to use the functionalities of this library through examples. [Go to the lessons](lessons/)
 
 ## Contributing
 Any help will be appreciated, some examples:
