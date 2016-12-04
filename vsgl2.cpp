@@ -118,9 +118,6 @@ void update()
         else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
             isDone = true;
     }
-    //Update the current Keys state table;
-    SDL_Log("Update keys state");
-    currentKeyStates = SDL_GetKeyboardState( NULL );
     SDL_RenderPresent(renderer);
 }
 
@@ -205,7 +202,8 @@ namespace io
 {
     bool isPressed(int key)
     {
-        return currentKeyStates[key];
+        currentKeyStates = SDL_GetKeyboardState( NULL );
+        return (bool)currentKeyStates[key];
     }
 }
 

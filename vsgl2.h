@@ -48,6 +48,7 @@ using namespace std;
 namespace vsgl2
 {
 
+#include "vsgl2_keycode.h"
 
 class Color
 {
