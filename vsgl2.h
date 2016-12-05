@@ -183,8 +183,19 @@ void draw_image(string image, int x, int y, int w, int h);
 
 namespace io
 {
+/**
+*   \brief Use to check if a button is pressed
+*   \param key The enum value indicating the key pressed
+*   \return True if **key** is pressed, false otherwise
+*   \attention All the SDL scancodes (https://wiki.libsdl.org/SDL_Scancode)
+*   are translated in a sort of VSGL equivalent notation
+*   For example, SDL_SCANCODE_LEFT will become VSGL_LEFT
+*   \warning All translated code are in vsgl2_keycode.h,
+*   this is a work in progress, so actually only certain codes are translated
+*   \todo Translate all the SDL2 scancodes into VSGL codes
+*/
     bool isPressed(int key);
-}
+}//closing io namespaces
 
 namespace utils
 {
