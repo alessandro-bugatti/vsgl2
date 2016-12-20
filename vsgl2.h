@@ -194,7 +194,7 @@ namespace io
 *   this is a work in progress, so actually only certain codes are translated
 *   \todo Translate all the SDL2 scancodes into VSGL codes
 */
-    bool isPressed(int key);
+    bool is_pressed(int key);
 }//closing io namespaces
 
 namespace utils

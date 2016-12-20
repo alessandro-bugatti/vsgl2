@@ -202,7 +202,7 @@ void draw_image(string image, int x, int y, int w, int h)
 
 namespace io
 {
-    bool isPressed(int key)
+    bool is_pressed(int key)
     {
         currentKeyStates = SDL_GetKeyboardState( NULL );
         return (bool)currentKeyStates[key];
