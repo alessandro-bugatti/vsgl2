@@ -33,6 +33,7 @@ SDL_Renderer *renderer;
 bool isDone = false;
 map<string,SDL_Texture *> images;
 const Uint8* currentKeyStates;
+int mouseX, mouseY;
 
 namespace general
 {
@@ -119,6 +120,10 @@ void update()
             isDone = true;
         else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
             isDone = true;
+        if( e.type == SDL_MOUSEMOTION ||
+           e.type == SDL_MOUSEBUTTONDOWN ||
+           e.type == SDL_MOUSEBUTTONUP )
+                SDL_GetMouseState( &mouseX, &mouseY );
     }
     SDL_RenderPresent(renderer);
 }
@@ -207,6 +212,28 @@ namespace io
         currentKeyStates = SDL_GetKeyboardState( NULL );
         return (bool)currentKeyStates[key];
     }
+
+    int get_mouse_x()
+    {
+        return mouseX;
+    }
+
+    int get_mouse_y()
+    {
+        return mouseY;
+    }
+
+    bool mouse_left_button_pressed()
+    {
+        return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT);
+    }
+
+    bool mouse_right_button_pressed()
+    {
+        return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
+    }
+
+
 }
 
 namespace utils

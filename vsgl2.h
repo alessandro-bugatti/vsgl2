@@ -195,6 +195,33 @@ namespace io
 *   \todo Translate all the SDL2 scancodes into VSGL codes
 */
     bool is_pressed(int key);
+
+/**
+*   \brief Use to get the mouse x coordinate
+*   \return The value of mouse x coordinate
+*/
+
+    int get_mouse_x();
+
+/**
+*   \brief Use to get the mouse y coordinate
+*   \return The value of mouse y coordinate
+*/
+    int get_mouse_y();
+
+/**
+*   \brief Use to check if the mouse left button is pressed
+*   \return True if the left button is pressed, false otherwise
+*/
+
+    bool mouse_left_button_pressed();
+
+/**
+*   \brief Use to check if the mouse right button is pressed
+*   \return True if the right button is pressed, false otherwise
+*/
+
+    bool mouse_right_button_pressed();
 }//closing io namespaces
 
 namespace utils
