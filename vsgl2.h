@@ -55,6 +55,7 @@ class Color
 
 public:
     SDL_Color c;
+    Color (){}
     Color(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         c.r = r;
@@ -172,11 +173,13 @@ void draw_filled_rect(int x, int y, int w, int h, const Color &c);
 *   not its original value
 *   \param h The height of the image as it will appear inside the window,
 *   not its original value
+*   \param [alpha] The transparency value for the image: with 255 (the default), the image
+*   will look as the original, with 0 the image will become invisible
 *   \warning The width and the height can be set as wanted, but it is better
 *   to have the dimension of the image in the file the same as in w and h
 *   to reduce CPU load and improve performance
 */
-void draw_image(string image, int x, int y, int w, int h);
+void draw_image(string image, int x, int y, int w, int h, uint8_t alpha = 255);
 
 }//closing video namespace
 

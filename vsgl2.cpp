@@ -27,11 +27,16 @@ using namespace AutoVersion;
 namespace vsgl2
 {
 
+struct vsgl2_image{
+    SDL_Texture *texture;
+    uint8_t alpha;
+};
+
 SDL_Window *window;
 int width,height; //window size
 SDL_Renderer *renderer;
 bool isDone = false;
-map<string,SDL_Texture *> images;
+map<string, vsgl2_image> images;
 const Uint8* currentKeyStates;
 int mouseX, mouseY;
 
@@ -53,7 +58,7 @@ void close()
     SDL_Log("Quitting SDL...");
     //Free loaded image
     for (auto const& i: images)
-        SDL_DestroyTexture( i.second);
+        SDL_DestroyTexture( i.second.texture);
     //Destroy window
     SDL_DestroyRenderer( renderer );
     SDL_DestroyWindow( window );
@@ -180,7 +185,7 @@ void draw_line(int x1, int y1, int x2, int y2, const Color& c)
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
-void draw_image(string image, int x, int y, int w, int h)
+void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
 {
     if (images.find(image)==images.end())
     {
@@ -190,7 +195,10 @@ void draw_image(string image, int x, int y, int w, int h)
         else
             {
                 SDL_Texture * texture = SDL_CreateTextureFromSurface( renderer, s);
-                images.insert(make_pair(image,texture));
+                vsgl2_image im;
+                im.texture = texture;
+                im.alpha = alpha;
+                images.insert(make_pair(image,im));
                 SDL_FreeSurface(s);
             }
     }
@@ -199,7 +207,8 @@ void draw_image(string image, int x, int y, int w, int h)
     r.y = y;
     r.w = w;
     r.h = h;
-    SDL_RenderCopy(renderer, images[image],NULL,&r);
+    SDL_SetTextureAlphaMod( images[image].texture, images[image].alpha);
+    SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
 
 }
 
