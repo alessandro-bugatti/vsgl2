@@ -259,6 +259,12 @@ void wait_for_button_pressed()
         {
             if (e.type == SDL_KEYDOWN)
                 done = true;
+            if (e.type == SDL_QUIT)
+            {
+                close();
+                exit(0);
+            }
+
         }
     }
 
