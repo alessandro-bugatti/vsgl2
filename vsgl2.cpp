@@ -27,7 +27,8 @@ using namespace AutoVersion;
 namespace vsgl2
 {
 
-struct vsgl2_image{
+struct vsgl2_image
+{
     SDL_Texture *texture;
     uint8_t alpha;
 };
@@ -37,6 +38,7 @@ int width,height; //window size
 SDL_Renderer *renderer;
 bool isDone = false;
 map<string, vsgl2_image> images;
+map<string, TTF_Font*> fonts;
 const Uint8* currentKeyStates;
 int mouseX, mouseY;
 
@@ -45,12 +47,20 @@ namespace general
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
+    SDL_Log("SDL init OK!");
     if (!(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) & (IMG_INIT_JPG | IMG_INIT_PNG)))
         SDL_Log("Image subsystem inizialitation error.");
+    else
+        SDL_Log("SDL image OK!");
+    if (TTF_Init() == -1)
+        SDL_Log("TTF subsystem inizialitation error.");
+    else
+        SDL_Log("SDL TTF OK!");
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
-    SDL_Log("SDL init");
+
+
 }
 
 void close()
@@ -126,9 +136,9 @@ void update()
         else if (e.type == SDL_KEYUP && e.key.keysym.sym == SDLK_ESCAPE)
             isDone = true;
         if( e.type == SDL_MOUSEMOTION ||
-           e.type == SDL_MOUSEBUTTONDOWN ||
-           e.type == SDL_MOUSEBUTTONUP )
-                SDL_GetMouseState( &mouseX, &mouseY );
+                e.type == SDL_MOUSEBUTTONDOWN ||
+                e.type == SDL_MOUSEBUTTONUP )
+            SDL_GetMouseState( &mouseX, &mouseY );
     }
     SDL_RenderPresent(renderer);
 }
@@ -139,7 +149,7 @@ void draw_point(int x, int y, const Color& c)
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
-        SDL_RenderDrawPoint(renderer, x, y);
+    SDL_RenderDrawPoint(renderer, x, y);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
@@ -193,14 +203,14 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
         if (s == NULL)
             SDL_Log("Caricamento immagine fallito: %s", SDL_GetError() );
         else
-            {
-                SDL_Texture * texture = SDL_CreateTextureFromSurface( renderer, s);
-                vsgl2_image im;
-                im.texture = texture;
-                im.alpha = alpha;
-                images.insert(make_pair(image,im));
-                SDL_FreeSurface(s);
-            }
+        {
+            SDL_Texture * texture = SDL_CreateTextureFromSurface( renderer, s);
+            vsgl2_image im;
+            im.texture = texture;
+            im.alpha = alpha;
+            images.insert(make_pair(image,im));
+            SDL_FreeSurface(s);
+        }
     }
     SDL_Rect r;
     r.x= x;
@@ -209,41 +219,92 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     r.h = h;
     SDL_SetTextureAlphaMod( images[image].texture, images[image].alpha);
     SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
-
 }
 
 }//closing namespace video
 
 namespace io
 {
-    bool is_pressed(int key)
-    {
-        currentKeyStates = SDL_GetKeyboardState( NULL );
-        return (bool)currentKeyStates[key];
-    }
+bool is_pressed(int key)
+{
+    currentKeyStates = SDL_GetKeyboardState( NULL );
+    return (bool)currentKeyStates[key];
+}
 
-    int get_mouse_x()
-    {
-        return mouseX;
-    }
+int get_mouse_x()
+{
+    return mouseX;
+}
 
-    int get_mouse_y()
-    {
-        return mouseY;
-    }
+int get_mouse_y()
+{
+    return mouseY;
+}
 
-    bool mouse_left_button_pressed()
-    {
-        return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT);
-    }
+bool mouse_left_button_pressed()
+{
+    return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_LEFT);
+}
 
-    bool mouse_right_button_pressed()
-    {
-        return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
-    }
+bool mouse_right_button_pressed()
+{
+    return SDL_GetMouseState(NULL, NULL) & SDL_BUTTON(SDL_BUTTON_RIGHT);
+}
 
 
 }
+
+namespace ttf_fonts
+{
+
+void draw_text(string font, int dim, string text, int x, int y, Color c)
+{
+    ostringstream font_identifier;
+    font_identifier << font << dim;
+    //The string made by the font name and the dimension is used as
+    //an identifier to load the font in memory in order  to have only one
+    //version in memory shared between different strings
+    if (fonts.find(font_identifier.str())== fonts.end())
+    {
+        TTF_Font* gFont = TTF_OpenFont( font.c_str(), dim );
+        if( gFont == NULL )
+        {
+            SDL_Log("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
+            SDL_Log(font.c_str());
+            return;
+        }
+        fonts.insert(make_pair(font_identifier.str(),gFont));
+    }
+    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier.str()],
+                               text.c_str(), c.c);
+    if( textSurface == NULL )
+    {
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+    }
+    else
+    {
+        SDL_Texture* texture = SDL_CreateTextureFromSurface( renderer,
+                   textSurface );
+        if( texture == NULL )
+        {
+            SDL_Log("Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
+        }
+        else
+        {
+            SDL_Rect r;
+            r.x= x;
+            r.y = y;
+            r.w = textSurface->w;
+            r.h = textSurface->h;
+            SDL_SetTextureAlphaMod( texture, c.c.a);
+            SDL_RenderCopy(renderer, texture,NULL,&r);
+            SDL_FreeSurface( textSurface );
+            SDL_DestroyTexture(texture);
+        }
+    }
+}
+
+} //END NAMESPACE ttf_fonts
 
 namespace utils
 {
