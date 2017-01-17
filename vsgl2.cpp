@@ -45,12 +45,20 @@ namespace general
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
+    SDL_Log("SDL init OK!");
     if (!(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) & (IMG_INIT_JPG | IMG_INIT_PNG)))
         SDL_Log("Image subsystem inizialitation error.");
+    else
+        SDL_Log("SDL image OK!");
+    if (TTF_Init() == -1)
+        SDL_Log("TTF subsystem inizialitation error.");
+    else
+        SDL_Log("SDL TTF OK!");
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
-    SDL_Log("SDL init");
+
+
 }
 
 void close()
