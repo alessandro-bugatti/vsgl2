@@ -38,10 +38,12 @@
  */
 
 #include <string>
+#include <sstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_net.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 
 using namespace std;
 
@@ -227,6 +229,25 @@ namespace io
     bool mouse_right_button_pressed();
 }//closing io namespaces
 
+namespace ttf_fonts
+{
+/**
+*   \brief Use this function to display a text on the screen with the
+*   desired font and dimension
+*   \param font The filename of the font.
+*   \param dim Font dimension
+*   \param text The text to be displayed
+*   \param x The x coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param y The y coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param c The color of the text
+*   \warning The font file have to be visible from the program
+*/
+
+    void draw_text(string font, int dim, string text, int x, int y, Color c);
+}
+
 namespace utils
 {
 
@@ -252,5 +273,6 @@ void delay(int milliseconds);
 using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
+using namespace vsgl2::ttf_fonts;
 using namespace vsgl2::utils;
 #endif //VSGL2_H_INCLUDED
