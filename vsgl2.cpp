@@ -336,6 +336,11 @@ void delay(int milliseconds)
     SDL_Delay(milliseconds);
 }
 
+unsigned int ms_time()
+{
+    return SDL_GetTicks();
+}
+
 }//closing namespace utils
 
 }

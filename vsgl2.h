@@ -265,6 +265,13 @@ void wait_for_button_pressed();
 */
 void delay(int milliseconds);
 
+/**
+*   \brief Use this function to get the time from SDL initialization in milliseconds
+*   \return Amount of time from SDL initialization in milliseconds
+*   \warning This value wraps if the program runs for more than ~49 days
+*/
+unsigned int ms_time();
+
 }//closing namaspace utility
 
 }
