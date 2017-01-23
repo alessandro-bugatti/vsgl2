@@ -257,7 +257,7 @@ bool mouse_right_button_pressed()
 namespace ttf_fonts
 {
 
-void draw_text(string font, int dim, string text, int x, int y, Color c)
+string load_font(string font, int dim)
 {
     ostringstream font_identifier;
     font_identifier << font << dim;
@@ -271,11 +271,18 @@ void draw_text(string font, int dim, string text, int x, int y, Color c)
         {
             SDL_Log("Failed to load font! SDL_ttf Error: %s\n", TTF_GetError() );
             SDL_Log(font.c_str());
-            return;
+            return "";
         }
         fonts.insert(make_pair(font_identifier.str(),gFont));
     }
-    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier.str()],
+    return font_identifier.str();
+}
+
+void draw_text(string font, int dim, string text, int x, int y, Color c)
+{
+    string font_identifier = load_font(font, dim);
+    if (font_identifier == "") return;
+    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier],
                                text.c_str(), c.c);
     if( textSurface == NULL )
     {
@@ -302,6 +309,38 @@ void draw_text(string font, int dim, string text, int x, int y, Color c)
             SDL_DestroyTexture(texture);
         }
     }
+}
+
+int text_width(string font, int dim, string text)
+{
+    string font_identifier = load_font(font, dim);
+    if (font_identifier == "") return -1;
+    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier],
+                               text.c_str(), Color(0,0,0,0).c);
+    if( textSurface == NULL )
+    {
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+        return -1;
+    }
+    int w = textSurface->w;
+    SDL_FreeSurface( textSurface );
+    return w;
+}
+
+int text_height(string font, int dim, string text)
+{
+    string font_identifier = load_font(font, dim);
+    if (font_identifier == "") return -1;
+    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier],
+                               text.c_str(), Color(0,0,0,0).c);
+    if( textSurface == NULL )
+    {
+        SDL_Log("Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
+        return -1;
+    }
+    int h = textSurface->h;
+    SDL_FreeSurface( textSurface );
+    return h;
 }
 
 } //END NAMESPACE ttf_fonts

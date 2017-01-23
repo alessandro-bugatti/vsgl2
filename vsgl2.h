@@ -246,6 +246,31 @@ namespace ttf_fonts
 */
 
     void draw_text(string font, int dim, string text, int x, int y, Color c);
+
+/**
+*   \brief Use this function to retrieve the width of a string, given
+*   the font, the dimension and the text. It can be useful because
+*   each character has a different size in general, so it could be very
+*   tricky to calculate the actual width of a string.
+*   \param font The filename of the font.
+*   \param dim Font dimension
+*   \param text The string to be displayed
+*   \return The width in pixel
+*/
+    int text_width(string font, int dim, string text);
+/**
+*   \brief Use this function to retrieve the height of a string, given
+*   the font, the dimension and the text. It can be useful because
+*   each character has a different size in general, so it could be very
+*   tricky to calculate the actual height of a string.
+*   \param font The filename of the font.
+*   \param dim Font dimension
+*   \param text The string to be displayed
+*   \return The height in pixel
+*/
+
+    int text_height(string font, int dim, string text);
+
 }
 
 namespace utils
