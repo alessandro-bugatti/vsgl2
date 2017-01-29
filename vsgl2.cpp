@@ -380,6 +380,14 @@ unsigned int ms_time()
     return SDL_GetTicks();
 }
 
+int take_screenshot(string filename)
+{
+    SDL_RWops* file = SDL_RWFromFile(filename.c_str(),"w");
+    int saved = SDL_SaveBMP_RW(SDL_GetWindowSurface(window), file, 1);
+    SDL_RWclose(file);
+    return saved;
+}
+
 }//closing namespace utils
 
 }

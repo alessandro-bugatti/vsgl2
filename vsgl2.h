@@ -297,6 +297,14 @@ void delay(int milliseconds);
 */
 unsigned int ms_time();
 
+/**
+*   \brief Use this function to take a screenshot of the window
+*   \param filename The filename where the screenshot will be saved
+*   \return 0 on success, negative otherwise
+*   \note The image is saved in BMP format
+*/
+int take_screenshot(string filename);
+
 }//closing namaspace utility
 
 }
