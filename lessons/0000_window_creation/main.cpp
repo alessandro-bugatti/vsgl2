@@ -12,6 +12,8 @@ int main(int argc, char* argv[]) {
     init();
     //create the window and show it
     set_window(512,512,"Vsgl2 intro");
+    //Update the screen
+    update();
     //the program waits for a touch of a button
     wait_for_button_pressed();
     //close the library and clean up everything
