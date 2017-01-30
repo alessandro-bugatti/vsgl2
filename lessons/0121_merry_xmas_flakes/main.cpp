@@ -11,8 +11,7 @@ using namespace vsgl2::utils;
 using namespace vsgl2::io;
 
 const int N = 70;
-const int DIM_FLAKE = 30;
-const int SPEED = 20;
+const int SPEED = 10;
 
 struct flake{
     int x;
