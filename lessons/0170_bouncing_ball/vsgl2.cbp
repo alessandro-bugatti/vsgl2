@@ -59,6 +59,7 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
+			<Add option="-std=c++11" />
 		</Compiler>
 		<Unit filename="../../vsgl2.cpp" />
 		<Unit filename="../../vsgl2.h" />
