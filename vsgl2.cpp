@@ -41,6 +41,7 @@ map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
 const Uint8* currentKeyStates;
 int mouseX, mouseY;
+Mix_Music *music;
 
 namespace general
 {
@@ -56,6 +57,11 @@ void init()
         SDL_Log("TTF subsystem inizialitation error.");
     else
         SDL_Log("SDL TTF OK!");
+    if( Mix_OpenAudio( 44100, MIX_DEFAULT_FORMAT, 2, 2048 ) < 0 )
+        SDL_Log("SDL_mixer subsystem inizialitation error. SDL_mixer Error: %s\n",
+                Mix_GetError() );
+    else
+        SDL_Log("SDL_mixer OK!");
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
@@ -72,8 +78,12 @@ void close()
     //Destroy window
     SDL_DestroyRenderer( renderer );
     SDL_DestroyWindow( window );
+    //Free resources
+    if (music != NULL)
+        Mix_FreeMusic( music );
     //Quit various subsystems
     IMG_Quit();
+    Mix_Quit();
     SDL_Log("Done.");
     SDL_Quit();
 }
@@ -222,6 +232,37 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
 }
 
 }//closing namespace video
+
+namespace audio
+{
+    void play_music(string file)
+    {
+        if (Mix_PausedMusic() == 1)
+            Mix_PlayMusic(music, -1);
+        if (music != NULL)
+            Mix_FreeMusic(music);
+        music = Mix_LoadMUS(file.c_str());
+        if( music == NULL )
+            SDL_Log( "Failed to load music! SDL_mixer Error: %s\n",
+                    Mix_GetError() );
+        else
+            Mix_PlayMusic(music, -1);
+    }
+
+    void pause_music()
+    {
+        if( Mix_PlayingMusic() == 0 )
+            return;
+        Mix_PauseMusic();
+    }
+
+    void stop_music()
+    {
+        if( Mix_PlayingMusic() == 0 )
+            return;
+        Mix_HaltMusic();
+    }
+}//closing namespace audio
 
 namespace io
 {

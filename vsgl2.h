@@ -186,6 +186,30 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha = 255);
 }//closing video namespace
 
 
+namespace audio
+{
+    /**
+    *   \brief Use to play a music in a loop (WAVE, MOD, MIDI, OGG, MP3, FLAC,
+    *   and any file that you use a command to play with). It can be typically
+    *   used to play a background music.
+    *   \param file The music name, either absolute or relative
+    *   \warning The music will play in background until it will be paused
+    *   or stopped
+    */
+    void play_music(string music);
+    /**
+    *   \brief Use to pause the music that is currently playing
+    *   \warning If a music is not  currently playing, nothing happens.
+    */
+    void pause_music();
+    /**
+    *   \brief Use to stop the music that is currently playing
+    *   \warning If a music is not  currently playing, nothing happens.
+    */
+    void stop_music();
+}//closing namespace audio
+
+
 namespace io
 {
 /**
@@ -313,6 +337,7 @@ int take_screenshot(string filename);
 using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
+using namespace vsgl2::audio;
 using namespace vsgl2::ttf_fonts;
 using namespace vsgl2::utils;
 #endif //VSGL2_H_INCLUDED
