@@ -261,8 +261,7 @@ namespace audio
 
     void stop_music()
     {
-        if( Mix_PlayingMusic() == 0 )
-            return;
+        Mix_PlayMusic(music, -1);
         Mix_HaltMusic();
     }
 }//closing namespace audio
