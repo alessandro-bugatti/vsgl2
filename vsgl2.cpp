@@ -238,7 +238,10 @@ namespace audio
     void play_music(string file)
     {
         if (Mix_PausedMusic() == 1)
-            Mix_PlayMusic(music, -1);
+        {
+            Mix_ResumeMusic();
+            return;
+        }
         if (music != NULL)
             Mix_FreeMusic(music);
         music = Mix_LoadMUS(file.c_str());
