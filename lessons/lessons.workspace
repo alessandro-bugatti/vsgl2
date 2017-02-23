@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_workspace_file>
+	<Workspace title="Workspace">
+		<Project filename="0000_window_creation/vsgl2.cbp" />
+		<Project filename="0010_drawing_lines/vsgl2.cbp" />
+		<Project filename="0020_drawing_images/vsgl2.cbp" />
+		<Project filename="0120_merry_xmas_squared/vsgl2.cbp" />
+		<Project filename="0121_merry_xmas_flakes/vsgl2.cbp" />
+		<Project filename="0170_bouncing_ball/vsgl2.cbp" />
+		<Project filename="0200_true_type_font_hello_world/vsgl2.cbp" />
+		<Project filename="0300_mouse_movements/vsgl2.cbp" />
+		<Project filename="0400_slider/vsgl2.cbp" />
+		<Project filename="0410_moving_line/vsgl2.cbp" />
+		<Project filename="0500_background_music/vsgl2.cbp" />
+	</Workspace>
+</CodeBlocks_workspace_file>
