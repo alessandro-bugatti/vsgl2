@@ -1,7 +1,7 @@
 # Drawing images
 Other than draw simple geometrical shapes, it is possible to draw images. An image is loaded from a file, either BMP or PNG or JPG, and put on screen simply calling this function:
 ```c
-draw_image ( String image,
+draw_image ( string image,
             int x,
             int y,
             int w,
