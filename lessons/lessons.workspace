@@ -4,6 +4,7 @@
 		<Project filename="0000_window_creation/vsgl2.cbp" />
 		<Project filename="0010_drawing_lines/vsgl2.cbp" />
 		<Project filename="0020_drawing_images/vsgl2.cbp" />
+		<Project filename="0030_mandelbrot/vsgl2.cbp" />
 		<Project filename="0120_merry_xmas_squared/vsgl2.cbp" />
 		<Project filename="0121_merry_xmas_flakes/vsgl2.cbp" />
 		<Project filename="0170_bouncing_ball/vsgl2.cbp" />
