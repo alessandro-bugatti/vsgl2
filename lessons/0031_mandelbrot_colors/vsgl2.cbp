@@ -2,7 +2,7 @@
 <CodeBlocks_project_file>
 	<FileVersion major="1" minor="6" />
 	<Project>
-		<Option title="vsgl2_mandelbrot" />
+		<Option title="vsgl2_mandelbrot_colors" />
 		<Option pch_mode="2" />
 		<Option compiler="gcc" />
 		<Build>
