@@ -7,9 +7,11 @@ using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::utils;
+using namespace vsgl2::ttf_fonts;
 
 int RADIUS = 10E12;
 const int MAX_ITERATIONS = 100;
+int max_iterations = MAX_ITERATIONS;
 
 const double X_BEGIN = -2;
 const double Y_BEGIN = -1.25;
@@ -41,7 +43,7 @@ Complex multiply(Complex a, Complex b)
 
 double mod(Complex c)
 {
-    return sqrt(c.real*c.real + c.imm*c.imm);
+    return c.real*c.real + c.imm*c.imm;
 }
 
 int diverge(Complex C)
@@ -50,7 +52,7 @@ int diverge(Complex C)
     Complex Z;
     Z.real = 0;
     Z.imm = 0;
-    for (i = 0; i < MAX_ITERATIONS && mod(Z) < RADIUS; i++)
+    for (i = 0; i < max_iterations && mod(Z) < RADIUS; i++)
         Z = sum(multiply(Z,Z),C);
     return i;
 }
@@ -66,10 +68,10 @@ int main(int argc, char* argv[]) {
     double y_range = Y_RANGE;
     init();
     //create the window and show it
-    set_window(640,640,"Vsgl2 Mandelbrot with zooming");
+    set_window(640,640,"Vsgl2 Mandelbrot with zoom");
     while(1)
     {
-        if (is_pressed(VSGL_E))
+        if (is_pressed(VSGL_ESC))
             break;
         if (mouse_left_button_pressed())
         {
@@ -79,6 +81,13 @@ int main(int argc, char* argv[]) {
             y_range /= 10;
             x_begin = x - x_range/2;
             y_begin = y - y_range/2;
+            max_iterations*=1.2;
+            int xt = (get_window_width() - text_width("vt323.ttf",40,"Computation in progress..."))/2;
+            int yt = (get_window_height() - text_height("vt323.ttf",40,"Computation in progress..."))/2;
+            draw_text("vt323.ttf",40,"Computation in progress...",
+                      xt, yt,
+                      Color(255,255,255,255));
+            update();
             need_update = true;
         }
         if (mouse_right_button_pressed())
@@ -89,6 +98,13 @@ int main(int argc, char* argv[]) {
             y_range *= 10;
             x_begin = x - x_range/2;
             y_begin = y - y_range/2;
+            max_iterations/=1.2;
+            int xt = (get_window_width() - text_width("vt323.ttf",40,"Computation in progress..."))/2;
+            int yt = (get_window_height() - text_height("vt323.ttf",40,"Computation in progress..."))/2;
+            draw_text("vt323.ttf",40,"Computation in progress...",
+                      xt, yt,
+                      Color(255,255,255,255));
+            update();
             need_update = true;
         }
         if(need_update)
