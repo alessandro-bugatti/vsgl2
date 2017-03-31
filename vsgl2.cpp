@@ -289,7 +289,6 @@ namespace audio
         }
         Mix_PlayChannel( -1, sounds[sound], 0 );
     }
-
 }//closing namespace audio
 
 namespace io

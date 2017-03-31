@@ -192,7 +192,7 @@ namespace audio
     *   \brief Use to play a music in a loop (WAVE, MOD, MIDI, OGG, MP3, FLAC,
     *   and any file that you use a command to play with). It can be typically
     *   used to play a background music.
-    *   \param file The music name, either absolute or relative
+    *   \param music The music name, either absolute or relative
     *   \warning The music will play in background until it will be paused
     *   or stopped
     */
@@ -211,9 +211,11 @@ namespace audio
     *   \brief Use to play a sound (WAVE, MOD, MIDI, OGG, MP3, FLAC,
     *   and any file that you use a command to play with). It can be typically
     *   used to play a sound effect linked to an user action (pressing a button...).
-    *   \param file The sound name, either absolute or relative
+    *   \param sound The sound name, either absolute or relative
     *   \warning The sound will play on its own channel, in this way it is possible to
     *   play multiple sounds at the same time, or the same sound overlapped.
+    *   \attention Calling this function without leaving enough time
+    *   between two calls, makes the second call useless.
     */
     void play_sound(string sound);
 }//closing namespace audio
