@@ -207,6 +207,15 @@ namespace audio
     *   \warning If a music is not  currently playing, nothing happens.
     */
     void stop_music();
+    /**
+    *   \brief Use to play a sound (WAVE, MOD, MIDI, OGG, MP3, FLAC,
+    *   and any file that you use a command to play with). It can be typically
+    *   used to play a sound effect linked to an user action (pressing a button...).
+    *   \param file The sound name, either absolute or relative
+    *   \warning The sound will play on its own channel, in this way it is possible to
+    *   play multiple sounds at the same time, or the same sound overlapped.
+    */
+    void play_sound(string sound);
 }//closing namespace audio
 
 
@@ -338,6 +347,7 @@ using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::audio;
+using namespace vsgl2::io;
 using namespace vsgl2::ttf_fonts;
 using namespace vsgl2::utils;
 #endif //VSGL2_H_INCLUDED
