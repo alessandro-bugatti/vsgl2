@@ -27,6 +27,8 @@ using namespace AutoVersion;
 namespace vsgl2
 {
 
+const int NUMBER_OF_CHANNELS = 16;
+
 struct vsgl2_image
 {
     SDL_Texture *texture;
@@ -39,6 +41,7 @@ SDL_Renderer *renderer;
 bool isDone = false;
 map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
+map<string, Mix_Chunk*> sounds;
 const Uint8* currentKeyStates;
 int mouseX, mouseY;
 Mix_Music *music;
@@ -62,6 +65,7 @@ void init()
                 Mix_GetError() );
     else
         SDL_Log("SDL_mixer OK!");
+    Mix_AllocateChannels(NUMBER_OF_CHANNELS);
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
@@ -75,12 +79,20 @@ void close()
     //Free loaded image
     for (auto const& i: images)
         SDL_DestroyTexture( i.second.texture);
+    //Free loaded sounds
+    for (auto const& i: sounds)
+        Mix_FreeChunk(i.second);
+    //Free loaded fonts
+    for (auto const& i: fonts)
+        TTF_CloseFont(i.second);
+
     //Destroy window
     SDL_DestroyRenderer( renderer );
     SDL_DestroyWindow( window );
     //Free resources
     if (music != NULL)
         Mix_FreeMusic( music );
+
     //Quit various subsystems
     IMG_Quit();
     Mix_Quit();
@@ -264,6 +276,20 @@ namespace audio
         Mix_PlayMusic(music, -1);
         Mix_HaltMusic();
     }
+
+    void play_sound(string sound)
+    {
+        if (sounds.find(sound)==sounds.end())
+        {
+            Mix_Chunk* s = Mix_LoadWAV(sound.c_str());
+            if( s == NULL )
+                SDL_Log("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+            else
+                sounds.insert(make_pair(sound,s));
+        }
+        Mix_PlayChannel( -1, sounds[sound], 0 );
+    }
+
 }//closing namespace audio
 
 namespace io
