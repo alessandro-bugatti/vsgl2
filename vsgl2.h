@@ -239,6 +239,21 @@ namespace io
     int get_mouse_y();
 
 /**
+*   \brief Use to get the mouse wheel horizontal value,
+*   \return The amount scrolled horizontally,
+*   positive (1) to the right and negative (-1) to the left
+*/
+
+    int get_mouse_wheel_x();
+
+/**
+*   \brief Use to get the mouse wheel vertical value,
+*   \return The amount scrolled vertically,
+*    positive (1) away from the user and negative (-1) toward the user
+*/
+    int get_mouse_wheel_y();
+
+/**
 *   \brief Use to check if the mouse left button is pressed
 *   \return True if the left button is pressed, false otherwise
 */
@@ -338,6 +353,7 @@ using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::audio;
+using namespace vsgl2::io;
 using namespace vsgl2::ttf_fonts;
 using namespace vsgl2::utils;
 #endif //VSGL2_H_INCLUDED
