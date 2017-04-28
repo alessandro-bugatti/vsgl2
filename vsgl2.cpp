@@ -43,7 +43,7 @@ map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
 map<string, Mix_Chunk*> sounds;
 const Uint8* currentKeyStates;
-int mouseX, mouseY;
+int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
 
 namespace general
@@ -151,6 +151,10 @@ bool done()
 void update()
 {
     SDL_Event e;
+    //Needed to avoid that the wheel value
+    //would stay to -1 or 1 after scrolling
+    mouseWheelX = 0;
+    mouseWheelY = 0;
     while ( SDL_PollEvent(&e) )
     {
         if (e.type == SDL_QUIT)
@@ -161,6 +165,11 @@ void update()
                 e.type == SDL_MOUSEBUTTONDOWN ||
                 e.type == SDL_MOUSEBUTTONUP )
             SDL_GetMouseState( &mouseX, &mouseY );
+        if( e.type == SDL_MOUSEWHEEL)
+            {
+                mouseWheelX = e.wheel.x;
+                mouseWheelY = e.wheel.y;
+            };
     }
     SDL_RenderPresent(renderer);
 }
@@ -307,6 +316,16 @@ int get_mouse_x()
 int get_mouse_y()
 {
     return mouseY;
+}
+
+int get_mouse_wheel_x()
+{
+    return mouseWheelX;
+}
+
+int get_mouse_wheel_y()
+{
+    return mouseWheelY;
 }
 
 bool mouse_left_button_pressed()
