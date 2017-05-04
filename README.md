@@ -1,7 +1,7 @@
 # vsgl2
 Very Simple Graphic Library 2
 
-This library is built upon the very well known SDL library: the goal is to introduce beginners into graphical programming, giving a set of functions in pure C (more or less).
+This library is built upon the very well known SDL2 library: the goal is to introduce beginners into graphical programming, giving a set of functions in pure C (more or less).
 
 The library is cross-platform, so it could be used in Windows, Linux and MacOS.
 
@@ -16,16 +16,16 @@ First of all it is necessary to install [CodeBlocks](http://www.codeblocks.org),
  - **First one** (the easiest): I have already created a big compressed file with all the stuff needed inside (compiler, Codeblocks IDE, libraries). [Download the file](http://www.imparando.net/software/codeblocks.zip), then uncompressed it on your PC. Download also [DLL files](http://www.imparando.net/software/dll.zip) and copy them inside Windows/SysWOW64 subfolder, that's it.
 
  - **Second one** (easy): after Codeblocks installation, download [this package](http://www.imparando.net/software/SDL_package.zip) created by me: there are three folders inside
-  - **include**: it contains header files (.h), inside *SDL2* subfolder. This subfolder has to be copied inside *include* folder within Codeblocks/Mingw directory
-  - **lib**: it contains the library object files, they have to be copied inside Codeblocks/Mingw/lib directory
-  - **bin**: it contains the DLLs needed to execute the VSGL2 programs on the host PC. They could be copied in the same folder of each executable and it is necessary if you plan to distribute your programs, but in the development phase it is better to copy them inside Windows/SysWOW64 subfolder: in this way they will be visible system-wide. There are also other DLLs other than SDL2 DLLs: they are necessary to execute basic tasks, e.g. to load JPEG images.
+   - **include**: it contains header files (.h), inside *SDL2* subfolder. This subfolder has to be copied inside *include* folder within Codeblocks/Mingw directory
+   - **lib**: it contains the library object files, they have to be copied inside Codeblocks/Mingw/lib directory
+   - **bin**: it contains the DLLs needed to execute the VSGL2 programs on the host PC. They could be copied in the same folder of each executable and it is necessary if you plan to distribute your programs, but in the development phase it is better to copy them inside Windows/SysWOW64 subfolder: in this way they will be visible system-wide. There are also other DLLs other than SDL2 DLLs: they are necessary to execute basic tasks, e.g. to load JPEG images.
 
 - **Third one** (less easy): after installing Codeblocks, it is possible to download every single library package (SDL2, SDL2_image, SDL2_mixer, SDL2_net, SDL2_ttf), here the links:
- - **SDL2**: main library, download from [this page](https://www.libsdl.org/download-2.0.php), Development libraries, file tar.gz for Mingw.
- - **SDL2_mixer**: sound library, download from [this page](https://www.libsdl.org/projects/SDL_mixer/), Development libraries, file tar.gz for Mingw.
- - **SDL2_image**: image loading library, download from [this page](https://www.libsdl.org/projects/SDL_image/), Development libraries, file tar.gz for Mingw.
- - **SDL2_net**: network library, download from [this page](https://www.libsdl.org/projects/SDL_net/), Development libraries, file tar.gz for Mingw.
- - **SDL_ttf**: TrueType font rendering library, download from [this page](https://www.libsdl.org/projects/SDL_ttf/), Development libraries, file tar.gz for Mingw.
+  - **SDL2**: main library, download from [this page](https://www.libsdl.org/download-2.0.php), Development libraries, file tar.gz for Mingw.
+  - **SDL2_mixer**: sound library, download from [this page](https://www.libsdl.org/projects/SDL_mixer/), Development libraries, file tar.gz for Mingw.
+  - **SDL2_image**: image loading library, download from [this page](https://www.libsdl.org/projects/SDL_image/), Development libraries, file tar.gz for Mingw.
+  - **SDL2_net**: network library, download from [this page](https://www.libsdl.org/projects/SDL_net/), Development libraries, file tar.gz for Mingw.
+  - **SDL_ttf**: TrueType font rendering library, download from [this page](https://www.libsdl.org/projects/SDL_ttf/), Development libraries, file tar.gz for Mingw.
 
  After that, the procedure is the same as in the second possibility, it has to be replicated for each package, which includes i686-w64-mingw32 folder with **include**, **lib** and **bin** folders inside.  
 
