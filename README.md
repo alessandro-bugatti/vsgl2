@@ -75,6 +75,8 @@ Main features:
 - Only functions, not classes or objects (from the user prospective, the library code uses C++)
 - Not a general library to do all the things, but only to do certain things in a easy manner. If you want to have full control of all the aspects, maybe it could be better to use SDL instead.
 
+## API documentation
+The documentation can be generated using Doxygen with the Doxyfile stored in the main project folder, otherwise there is a copy online [here on GitHub pages](https://alessandro-bugatti.github.io/vsgl2/)
 
 ## Lessons
 Very often programming library has a not so good documentation, sometimes because it is too difficult to follow, sometimes because it lacks in explaining fundamental parts.
