@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['g',['G',['../lessons_20170__bouncing__ball_2main_8cpp.html#aed9ea78689ecce0b7264c02c7f8a9a54',1,'main.cpp']]],
   ['get_5fmouse_5fwheel_5fx',['get_mouse_wheel_x',['../namespacevsgl2_1_1io.html#a588838c0347b1894c3e679e5e5200e63',1,'vsgl2::io']]],
   ['get_5fmouse_5fwheel_5fy',['get_mouse_wheel_y',['../namespacevsgl2_1_1io.html#a3d48b149491d4abed32c2410f2bdf0a6',1,'vsgl2::io']]],
   ['get_5fmouse_5fx',['get_mouse_x',['../namespacevsgl2_1_1io.html#ae4bb5d5c8af4f3094408c052dcbccff7',1,'vsgl2::io']]],

@@ -6,8 +6,6 @@ var searchData=
   ['io',['io',['../namespacevsgl2_1_1io.html',1,'vsgl2']]],
   ['ttf_5ffonts',['ttf_fonts',['../namespacevsgl2_1_1ttf__fonts.html',1,'vsgl2']]],
   ['utils',['utils',['../namespacevsgl2_1_1utils.html',1,'vsgl2']]],
-  ['v',['v',['../structflake.html#a3b90d5a73541ab9402511d87bed076ef',1,'flake']]],
-  ['v_5fmove',['V_MOVE',['../lessons_20999__space__invaders_2main_8cpp.html#a1a910979d8a6e7a36042dd25138692c2',1,'main.cpp']]],
   ['version_2eh',['version.h',['../version_8h.html',1,'']]],
   ['video',['video',['../namespacevsgl2_1_1video.html',1,'vsgl2']]],
   ['vsgl2',['vsgl2',['../namespacevsgl2.html',1,'']]],
@@ -56,7 +54,5 @@ var searchData=
   ['vsgl_5fw',['VSGL_W',['../namespacevsgl2.html#a672847ed0b78afe625b3945f5fe1d909',1,'vsgl2::VSGL_W()'],['../vsgl2__keycode_8h.html#a672847ed0b78afe625b3945f5fe1d909',1,'VSGL_W():&#160;vsgl2_keycode.h']]],
   ['vsgl_5fx',['VSGL_X',['../namespacevsgl2.html#ae4c971117380d559c6daaa4894551ce7',1,'vsgl2::VSGL_X()'],['../vsgl2__keycode_8h.html#ae4c971117380d559c6daaa4894551ce7',1,'VSGL_X():&#160;vsgl2_keycode.h']]],
   ['vsgl_5fy',['VSGL_Y',['../namespacevsgl2.html#a3bd0c05c79739c89e678b225ddd541e4',1,'vsgl2::VSGL_Y()'],['../vsgl2__keycode_8h.html#a3bd0c05c79739c89e678b225ddd541e4',1,'VSGL_Y():&#160;vsgl2_keycode.h']]],
-  ['vsgl_5fz',['VSGL_Z',['../namespacevsgl2.html#a8168da25c670029490146994f3ad4396',1,'vsgl2::VSGL_Z()'],['../vsgl2__keycode_8h.html#a8168da25c670029490146994f3ad4396',1,'VSGL_Z():&#160;vsgl2_keycode.h']]],
-  ['vx',['vx',['../lessons_20170__bouncing__ball_2main_8cpp.html#a2d31cc80a747457c212675a58c68b2b1',1,'main.cpp']]],
-  ['vy',['vy',['../lessons_20170__bouncing__ball_2main_8cpp.html#a42e75115788e629a258d041808d822a0',1,'main.cpp']]]
+  ['vsgl_5fz',['VSGL_Z',['../namespacevsgl2.html#a8168da25c670029490146994f3ad4396',1,'vsgl2::VSGL_Z()'],['../vsgl2__keycode_8h.html#a8168da25c670029490146994f3ad4396',1,'VSGL_Z():&#160;vsgl2_keycode.h']]]
 ];

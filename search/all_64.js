@@ -1,14 +1,7 @@
 var searchData=
 [
   ['delay',['delay',['../namespacevsgl2_1_1utils.html#a5bb386008480201364471c2bc47c0502',1,'vsgl2::utils']]],
-  ['delta',['DELTA',['../lessons_20320__mouse__wheel__zooming_2main_8cpp.html#ae1cf540194451a5d9f45df52856ac056',1,'main.cpp']]],
-  ['dim',['DIM',['../lessons_20999__space__invaders_2main_8cpp.html#a589b8b9bfdf714f736059845d568b597',1,'main.cpp']]],
-  ['dim_5fflake',['DIM_FLAKE',['../lessons_20120__merry__xmas__squared_2main_8cpp.html#aa8e22ff1ee8fc32ab17485bf487d7381',1,'main.cpp']]],
-  ['dimx',['dimx',['../lessons_20170__bouncing__ball_2main_8cpp.html#a8b0f6ae031a507c3ffb7bf0eec290d46',1,'main.cpp']]],
-  ['dimy',['dimy',['../lessons_20170__bouncing__ball_2main_8cpp.html#a3a072d6ef9c51d085b44eac70f2edff6',1,'main.cpp']]],
-  ['diverge',['diverge',['../lessons_20030__mandelbrot_2main_8cpp.html#a7759e21e62bd40f666b37eea3c0b8e1b',1,'diverge(Complex C):&#160;main.cpp'],['../lessons_20031__mandelbrot__colors_2main_8cpp.html#a7759e21e62bd40f666b37eea3c0b8e1b',1,'diverge(Complex C):&#160;main.cpp'],['../lessons_20032__mandelbrot__zoom_2main_8cpp.html#a7759e21e62bd40f666b37eea3c0b8e1b',1,'diverge(Complex C):&#160;main.cpp']]],
   ['done',['done',['../namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142',1,'vsgl2::video']]],
-  ['draw_5fdata',['draw_data',['../lessons_20015__drawing__graphics_2main_8cpp.html#a96ac5a0e453ddda8689babd04ebf3a49',1,'main.cpp']]],
   ['draw_5ffilled_5frect',['draw_filled_rect',['../namespacevsgl2_1_1video.html#abccb84303150ed7e3d5c4ef96344dcd2',1,'vsgl2::video']]],
   ['draw_5fimage',['draw_image',['../namespacevsgl2_1_1video.html#ae8dfc23e4e46a3b74fca1e64d920bf7d',1,'vsgl2::video']]],
   ['draw_5fline',['draw_line',['../namespacevsgl2_1_1video.html#a60c5655ba52a5e3c3c4afd0fdd70618f',1,'vsgl2::video']]],
