@@ -2,6 +2,7 @@
 #include <ctime>
 #include <vector>
 #include <cstdio>
+#include <cstring>
 #include "../../vsgl2.h"
 
 using namespace std;
@@ -15,7 +16,7 @@ using namespace vsgl2::io;
 const int N_SHIPS = 10;
 const int N_ROWS = 4;
 const int DIM = 30;
-const float SPEED = 0.25;
+const float SPEED = 0.125;
 const int SPACE = 10;
 const int V_MOVE = 20;
 
@@ -24,6 +25,12 @@ const char ship[][30] ={
     "images/two.png",
     "images/three.png",
     "images/four.png"
+};
+
+struct Object{
+    int x, y;
+    char name[30];
+    int alive;
 };
 
 const char main_font[] = "vt323.ttf";
@@ -89,30 +96,31 @@ int main(int argc, char* argv[]) {
     //init the library
     init();
     //create the window and show it
-    set_window(500,600,"Vsgl2 Space Invaders");
+    set_window(640,480,"Vsgl2 Space Invaders");
     //main loop
 
     int w = get_window_width();
     int h = get_window_height();
-    int x[N_ROWS][N_SHIPS], y[N_ROWS][N_SHIPS];
+    Object ships[N_ROWS][N_SHIPS];
     int i, j;
     for ( i = 0; i < N_ROWS; i++)
         for ( j = 0; j < N_SHIPS; j++)
         {
-            x[i][j] = SPACE + j*(DIM+SPACE);
-            y[i][j] = i*DIM;
+            strncpy(ships[i][j].name,ship[i],30);
+            ships[i][j].x = SPACE + j*(DIM+SPACE);
+            ships[i][j].y = i*DIM;
+            ships[i][j].alive = 1;
         }
     double spostamento_x = 0;
     int spostamento_y = 0;
     int dir = 1;
     int right_border = (w - SPACE*2 - (DIM+SPACE)*N_SHIPS);
-    splashscreen();
+    //splashscreen();
     while(!done())
     {
-        delay(2);
-        if (spostamento_x < right_border && dir == 1)
-            spostamento_x += dir * SPEED;
-        else if (spostamento_x > SPACE && dir == -1)
+
+        if (spostamento_x < right_border && dir == 1
+            || spostamento_x > SPACE && dir == -1)
             spostamento_x += dir * SPEED;
         else
         {
@@ -122,9 +130,9 @@ int main(int argc, char* argv[]) {
         draw_filled_rect(0,0,get_window_width(),get_window_height(),Color(0,0,0,255));
         for ( i = 0; i < N_ROWS; i++)
             for ( j = 0; j < N_SHIPS; j++)
-                draw_image(ship[i],
-                        spostamento_x + x[i][j],
-                        spostamento_y + y[i][j],
+                draw_image(ships[i][j].name,
+                        spostamento_x + ships[i][j].x,
+                        spostamento_y + ships[i][j].y,
                         DIM,DIM,255);
         update();
     }
