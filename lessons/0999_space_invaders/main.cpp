@@ -19,6 +19,8 @@ const int DIM = 30;
 const float SPEED = 0.125;
 const int SPACE = 10;
 const int V_MOVE = 20;
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
 
 const char ship[][30] ={
     "images/one.png",
@@ -34,6 +36,12 @@ struct Object{
 };
 
 const char main_font[] = "vt323.ttf";
+Object ships[N_ROWS][N_SHIPS];
+Object tank;
+double spostamento_x = 0;
+int spostamento_y = 0;
+int dir = 1;
+int right_border;
 
 void splashscreen()
 {
@@ -91,17 +99,8 @@ void splashscreen()
     }
 }
 
-int main(int argc, char* argv[]) {
-
-    //init the library
-    init();
-    //create the window and show it
-    set_window(640,480,"Vsgl2 Space Invaders");
-    //main loop
-
-    int w = get_window_width();
-    int h = get_window_height();
-    Object ships[N_ROWS][N_SHIPS];
+void init_ships()
+{
     int i, j;
     for ( i = 0; i < N_ROWS; i++)
         for ( j = 0; j < N_SHIPS; j++)
@@ -111,15 +110,11 @@ int main(int argc, char* argv[]) {
             ships[i][j].y = i*DIM;
             ships[i][j].alive = 1;
         }
-    double spostamento_x = 0;
-    int spostamento_y = 0;
-    int dir = 1;
-    int right_border = (w - SPACE*2 - (DIM+SPACE)*N_SHIPS);
-    //splashscreen();
-    while(!done())
-    {
+}
 
-        if (spostamento_x < right_border && dir == 1
+void move_ships()
+{
+    if (spostamento_x < right_border && dir == 1
             || spostamento_x > SPACE && dir == -1)
             spostamento_x += dir * SPEED;
         else
@@ -127,13 +122,62 @@ int main(int argc, char* argv[]) {
             dir = -dir;
             spostamento_y += V_MOVE;
         }
-        draw_filled_rect(0,0,get_window_width(),get_window_height(),Color(0,0,0,255));
-        for ( i = 0; i < N_ROWS; i++)
+}
+
+void draw_ships()
+{
+    int i, j;
+    for ( i = 0; i < N_ROWS; i++)
             for ( j = 0; j < N_SHIPS; j++)
                 draw_image(ships[i][j].name,
                         spostamento_x + ships[i][j].x,
                         spostamento_y + ships[i][j].y,
                         DIM,DIM,255);
+
+}
+
+void init_tank()
+{
+    strncpy(tank.name, "images/tank.png",30);
+    tank.x = DIM;
+    tank.y = SCREEN_HEIGHT*0.9;
+    tank.alive = 1;
+}
+
+void draw_tank()
+{
+    draw_image(tank.name, tank.x, tank.y, DIM, DIM, 255);
+}
+
+
+void move_tank()
+{
+    if (is_pressed(VSGL_LEFT))
+        tank.x -= 1;
+    if (is_pressed(VSGL_RIGHT))
+        tank.x += 1;
+
+}
+int main(int argc, char* argv[]) {
+
+    //init the library
+    init();
+    //create the window and show it
+    set_window(640,480,"Vsgl2 Space Invaders");
+    int i, j;
+    int w = get_window_width();
+    int h = get_window_height();
+    right_border = (w - SPACE*2 - (DIM+SPACE)*N_SHIPS);
+    init_ships();
+    init_tank();
+    //splashscreen();
+    while(!done())
+    {
+        move_ships();
+        move_tank();
+        draw_filled_rect(0,0,get_window_width(),get_window_height(),Color(0,0,0,255));
+        draw_ships();
+        draw_tank();
         update();
     }
 
