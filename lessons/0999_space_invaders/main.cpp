@@ -30,14 +30,16 @@ const char ship[][30] ={
 };
 
 struct Object{
-    int x, y;
+    double x, y;
+    int w,h;
     char name[30];
-    int alive;
+    int active;
 };
 
+
 const char main_font[] = "vt323.ttf";
-Object ships[N_ROWS][N_SHIPS];
-Object tank;
+Object alien_ships[N_ROWS][N_SHIPS];
+Object tank, bullet;
 double spostamento_x = 0;
 int spostamento_y = 0;
 int dir = 1;
@@ -105,14 +107,16 @@ void init_ships()
     for ( i = 0; i < N_ROWS; i++)
         for ( j = 0; j < N_SHIPS; j++)
         {
-            strncpy(ships[i][j].name,ship[i],30);
-            ships[i][j].x = SPACE + j*(DIM+SPACE);
-            ships[i][j].y = i*DIM;
-            ships[i][j].alive = 1;
+            strncpy(alien_ships[i][j].name,ship[i],30);
+            alien_ships[i][j].x = SPACE + j*(DIM+SPACE);
+            alien_ships[i][j].y = i*DIM;
+            alien_ships[i][j].w = DIM;
+            alien_ships[i][j].h = DIM;
+            alien_ships[i][j].active = 1;
         }
 }
 
-void move_ships()
+void update_ships()
 {
     if (spostamento_x < right_border && dir == 1
             || spostamento_x > SPACE && dir == -1)
@@ -122,6 +126,12 @@ void move_ships()
             dir = -dir;
             spostamento_y += V_MOVE;
         }
+    int i, j;
+    for ( i = 0; i < N_ROWS; i++)
+            for ( j = 0; j < N_SHIPS; j++){
+                alien_ships[i][j].x += dir*SPEED;
+                alien_ships[i][j].y = spostamento_y + DIM*i;
+            }
 }
 
 void draw_ships()
@@ -129,10 +139,11 @@ void draw_ships()
     int i, j;
     for ( i = 0; i < N_ROWS; i++)
             for ( j = 0; j < N_SHIPS; j++)
-                draw_image(ships[i][j].name,
-                        spostamento_x + ships[i][j].x,
-                        spostamento_y + ships[i][j].y,
-                        DIM,DIM,255);
+                if (alien_ships[i][j].active)
+                    draw_image(alien_ships[i][j].name,
+                            alien_ships[i][j].x,
+                            alien_ships[i][j].y,
+                            DIM,DIM,255);
 
 }
 
@@ -141,7 +152,10 @@ void init_tank()
     strncpy(tank.name, "images/tank.png",30);
     tank.x = DIM;
     tank.y = SCREEN_HEIGHT*0.9;
-    tank.alive = 1;
+    tank.active = 1;
+    bullet.h = 5;
+    bullet.w = 5;
+    bullet.active = 0;
 }
 
 void draw_tank()
@@ -149,15 +163,63 @@ void draw_tank()
     draw_image(tank.name, tank.x, tank.y, DIM, DIM, 255);
 }
 
+void shot()
+{
+    if (!bullet.active)
+    {
+        bullet.x = tank.x + tank.w/2;
+        bullet.y = tank.y;
+        bullet.active = 1;
+    }
+}
 
-void move_tank()
+void read_input()
 {
     if (is_pressed(VSGL_LEFT))
         tank.x -= 1;
     if (is_pressed(VSGL_RIGHT))
         tank.x += 1;
-
+    if (is_pressed(VSGL_W))
+        shot();
 }
+
+bool collide(Object a, Object b)
+{
+    return !(a.y > b.y + b.h ||
+             a.y + a.h < b.y ||
+             a.x > b.x + b.w ||
+             a.x + a.w < b.x);
+}
+
+void update_bullet()
+{
+    if (bullet.active)
+        bullet.y -= 0.25;
+    if (bullet.y <= 0)
+        bullet.active = 0;
+}
+
+void draw_bullet()
+{
+    if (bullet.active)
+        draw_filled_rect(bullet.x,bullet.y,5,5,Color(255,255,255,255));
+}
+
+bool striked()
+{
+    int i, j;
+    for (i = 0; i < N_ROWS; i++)
+        for (j = 0; j < N_ROWS; j++)
+        if (bullet.active && alien_ships[i][j].active &&
+            collide(bullet,alien_ships[i][j])){
+            alien_ships[i][j].active = 0;
+            bullet.active = 0;
+            bullet.y = tank.y;
+            return true;
+        }
+    return false;
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
@@ -170,14 +232,18 @@ int main(int argc, char* argv[]) {
     right_border = (w - SPACE*2 - (DIM+SPACE)*N_SHIPS);
     init_ships();
     init_tank();
+
     //splashscreen();
     while(!done())
     {
-        move_ships();
-        move_tank();
+        update_ships();
+        read_input();
+        update_bullet();
         draw_filled_rect(0,0,get_window_width(),get_window_height(),Color(0,0,0,255));
         draw_ships();
         draw_tank();
+        draw_bullet();
+        striked();
         update();
     }
 
