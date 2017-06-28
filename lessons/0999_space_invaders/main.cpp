@@ -45,6 +45,8 @@ int spostamento_y = DIM;
 int dir = 1;
 int right_border;
 int points = 0;
+int hit_value = 100;
+int lives = 3;
 
 void splashscreen()
 {
@@ -234,6 +236,12 @@ void draw_points()
                   Color(255,255,255,255));
 }
 
+void draw_lives()
+{
+    for (int i = 0; i < lives; i++)
+        draw_image(tank.name, i*DIM, 10, DIM/2, DIM/2, 255);
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
@@ -257,8 +265,9 @@ int main(int argc, char* argv[]) {
         draw_tank();
         draw_bullet();
         if (striked())
-            points += 100;
+            points += hit_value;
         draw_points();
+        draw_lives();
         update();
     }
 
