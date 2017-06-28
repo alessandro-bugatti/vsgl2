@@ -41,9 +41,10 @@ const char main_font[] = "vt323.ttf";
 Object alien_ships[N_ROWS][N_SHIPS];
 Object tank, bullet;
 double spostamento_x = 0;
-int spostamento_y = 0;
+int spostamento_y = DIM;
 int dir = 1;
 int right_border;
+int points = 0;
 
 void splashscreen()
 {
@@ -109,7 +110,7 @@ void init_ships()
         {
             strncpy(alien_ships[i][j].name,ship[i],30);
             alien_ships[i][j].x = SPACE + j*(DIM+SPACE);
-            alien_ships[i][j].y = i*DIM;
+            alien_ships[i][j].y = i*DIM + DIM;
             alien_ships[i][j].w = DIM;
             alien_ships[i][j].h = DIM;
             alien_ships[i][j].active = 1;
@@ -121,18 +122,20 @@ void update_ships()
     if (spostamento_x < right_border && dir == 1
             || spostamento_x > SPACE && dir == -1)
             spostamento_x += dir * SPEED;
-        else
-        {
-            dir = -dir;
-            spostamento_y += V_MOVE;
-        }
+    else
+    {
+        dir = -dir;
+        int i, j;
+        for ( i = 0; i < N_ROWS; i++)
+            for ( j = 0; j < N_SHIPS; j++)
+                alien_ships[i][j].y += V_MOVE;
+    }
     int i, j;
     for ( i = 0; i < N_ROWS; i++)
-            for ( j = 0; j < N_SHIPS; j++){
+            for ( j = 0; j < N_SHIPS; j++)
                 alien_ships[i][j].x += dir*SPEED;
-                alien_ships[i][j].y = spostamento_y + DIM*i;
-            }
 }
+
 
 void draw_ships()
 {
@@ -143,7 +146,9 @@ void draw_ships()
                     draw_image(alien_ships[i][j].name,
                             alien_ships[i][j].x,
                             alien_ships[i][j].y,
-                            DIM,DIM,255);
+                            alien_ships[i][j].w,
+                            alien_ships[i][j].h,
+                            255);
 
 }
 
@@ -220,16 +225,24 @@ bool striked()
     return false;
 }
 
+void draw_points()
+{
+    char s[20];
+    sprintf(s,"%5d", points);
+    draw_text(main_font,20,s,get_window_width()*9/10,
+                  10,
+                  Color(255,255,255,255));
+
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
     init();
     //create the window and show it
     set_window(640,480,"Vsgl2 Space Invaders");
-    int i, j;
-    int w = get_window_width();
-    int h = get_window_height();
-    right_border = (w - SPACE*2 - (DIM+SPACE)*N_SHIPS);
+    int i;
+    right_border = (get_window_width() - SPACE*2 - (DIM+SPACE)*N_SHIPS);
     init_ships();
     init_tank();
 
@@ -239,11 +252,14 @@ int main(int argc, char* argv[]) {
         update_ships();
         read_input();
         update_bullet();
-        draw_filled_rect(0,0,get_window_width(),get_window_height(),Color(0,0,0,255));
+        draw_filled_rect(0,0,get_window_width(),get_window_height(),
+                         Color(0,0,0,255)); //the background
         draw_ships();
         draw_tank();
         draw_bullet();
-        striked();
+        if (striked())
+            points += 100;
+        draw_points();
         update();
     }
 
