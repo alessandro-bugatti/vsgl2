@@ -228,11 +228,10 @@ bool striked()
 void draw_points()
 {
     char s[20];
-    sprintf(s,"%5d", points);
+    sprintf(s,"%05d", points);
     draw_text(main_font,20,s,get_window_width()*9/10,
                   10,
                   Color(255,255,255,255));
-
 }
 
 int main(int argc, char* argv[]) {
