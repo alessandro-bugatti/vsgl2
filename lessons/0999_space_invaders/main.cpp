@@ -202,14 +202,14 @@ void update_bullet()
 void draw_bullet()
 {
     if (bullet.active)
-        draw_filled_rect(bullet.x,bullet.y,5,5,Color(255,255,255,255));
+        draw_filled_rect(bullet.x,bullet.y,bullet.w,bullet.h,Color(255,255,255,255));
 }
 
 bool striked()
 {
     int i, j;
     for (i = 0; i < N_ROWS; i++)
-        for (j = 0; j < N_ROWS; j++)
+        for (j = 0; j < N_SHIPS; j++)
         if (bullet.active && alien_ships[i][j].active &&
             collide(bullet,alien_ships[i][j])){
             alien_ships[i][j].active = 0;
