@@ -16,7 +16,7 @@ using namespace vsgl2::io;
 const int N_SHIPS = 10;
 const int N_ROWS = 4;
 const int DIM = 30;
-const float SPEED = 0.125;
+const float SPEED = 1.25;
 const int SPACE = 10;
 const int V_MOVE = 20;
 const int SCREEN_WIDTH = 640;
@@ -40,9 +40,8 @@ struct Object{
 const char main_font[] = "vt323.ttf";
 Object alien_ships[N_ROWS][N_SHIPS];
 Object tank, bullet;
-double spostamento_x = 0;
-int spostamento_y = DIM;
-int dir = 1;
+double spostamento_x;
+int dir;
 int right_border;
 int points = 0;
 int hit_value = 100;
@@ -107,6 +106,8 @@ void splashscreen()
 void init_ships()
 {
     int i, j;
+    dir = 1;
+    spostamento_x = 0;
     for ( i = 0; i < N_ROWS; i++)
         for ( j = 0; j < N_SHIPS; j++)
         {
@@ -212,7 +213,7 @@ void draw_bullet()
         draw_filled_rect(bullet.x,bullet.y,bullet.w,bullet.h,Color(255,255,255,255));
 }
 
-bool striked()
+bool alien_striked()
 {
     int i, j;
     for (i = 0; i < N_ROWS; i++)
@@ -242,6 +243,17 @@ void draw_lives()
         draw_image(tank.name, i*DIM, 10, DIM/2, DIM/2, 255);
 }
 
+bool lost_life()
+{
+    int i, j;
+    for (i = 0; i < N_ROWS; i++)
+        for (j = 0; j < N_SHIPS; j++)
+        if (alien_ships[i][j].active &&
+            alien_ships[i][j].y + alien_ships[i][j].h > tank.y)
+            return true;
+    return false;
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
@@ -264,8 +276,14 @@ int main(int argc, char* argv[]) {
         draw_ships();
         draw_tank();
         draw_bullet();
-        if (striked())
+        if (alien_striked())
             points += hit_value;
+        if (lost_life())
+        {
+            init_ships();
+            init_tank();
+            lives--;
+        }
         draw_points();
         draw_lives();
         update();
