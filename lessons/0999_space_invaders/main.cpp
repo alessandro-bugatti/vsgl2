@@ -254,6 +254,20 @@ bool lost_life()
     return false;
 }
 
+void game_over()
+{
+    int w = text_width(main_font,80,"Game over");
+    int h = text_height(main_font,80,"Game over");
+
+    draw_filled_rect(0,0,get_window_width(), get_window_height(),
+                         Color(0,0,0,255));
+    draw_text(main_font,80,"Game over",(get_window_width()-w)/2,
+                  (get_window_height()-h)/2,
+                  Color(255,255,255,255));
+    update();
+
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
@@ -266,7 +280,7 @@ int main(int argc, char* argv[]) {
     init_tank();
 
     //splashscreen();
-    while(!done())
+    while(!done() && lives > 0)
     {
         update_ships();
         read_input();
@@ -288,8 +302,10 @@ int main(int argc, char* argv[]) {
         draw_lives();
         update();
     }
-
+    game_over();
+    wait_for_button_pressed();
     //close the library and clean up everything
     close();
     return 0;
 }
+
