@@ -181,6 +181,11 @@ void shot()
     }
 }
 
+void alien_shot()
+{
+
+}
+
 void read_input()
 {
     if (is_pressed(VSGL_LEFT))
