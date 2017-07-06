@@ -122,6 +122,12 @@ void init_ships()
             alien_ships[i][j].h = DIM;
             alien_ships[i][j].active = 1;
         }
+    for ( i = 0; i < MAX_ALIEN_BULLETS; i++)
+    {
+        alien_bullets[i].w = 5;
+        alien_bullets[i].h = 5;
+        alien_bullets[i].active = 0;
+    }
 }
 
 void update_ships()
@@ -241,7 +247,8 @@ void update_bullet()
 void draw_bullet()
 {
     if (bullet.active)
-        draw_filled_rect(bullet.x,bullet.y,bullet.w,bullet.h,Color(255,255,255,255));
+        draw_filled_rect(bullet.x,bullet.y,bullet.w,bullet.h,
+                         Color(0,255,0,255));
 }
 
 void update_alien_bullets()
@@ -262,7 +269,9 @@ void draw_alien_bullets()
     int i;
     for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
        if (alien_bullets[i].active)
-        draw_filled_rect(alien_bullets[i].x,alien_bullets[i].y,5,5,Color(255,255,255,255));
+        draw_filled_rect(alien_bullets[i].x,alien_bullets[i].y,
+                         alien_bullets[i].w,alien_bullets[i].h,
+                         Color(255,255,255,255));
 }
 
 bool alien_striked()
