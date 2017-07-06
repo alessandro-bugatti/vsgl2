@@ -14,13 +14,15 @@ using namespace vsgl2::io;
 
 
 const int N_SHIPS = 10;
+const int MAX_ALIEN_BULLETS = 5;
 const int N_ROWS = 4;
 const int DIM = 30;
-const float SPEED = 1.25;
+const float SPEED = 0.25;
 const int SPACE = 10;
 const int V_MOVE = 20;
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
+const int RECHARGING_TIME = 1000;
 
 const char ship[][30] ={
     "images/one.png",
@@ -40,12 +42,14 @@ struct Object{
 const char main_font[] = "vt323.ttf";
 Object alien_ships[N_ROWS][N_SHIPS];
 Object tank, bullet;
+Object alien_bullets[MAX_ALIEN_BULLETS];
 double spostamento_x;
 int dir;
 int right_border;
 int points = 0;
 int hit_value = 100;
 int lives = 3;
+int last_shot_time = 0;
 
 void splashscreen()
 {
@@ -181,9 +185,27 @@ void shot()
     }
 }
 
+bool recharged()
+{
+    if (ms_time() - last_shot_time > RECHARGING_TIME)
+        return true;
+    return false;
+}
+
 void alien_shot()
 {
-
+    if (!recharged())
+        return;
+    last_shot_time = ms_time();
+    int i;
+    for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
+        if (!alien_bullets[i].active)
+        {
+            alien_bullets[i].x = rand()%N_SHIPS*(DIM+SPACE) + alien_ships[0][0].x;
+            alien_bullets[i].y = alien_ships[N_ROWS-1][0].y + DIM;
+            alien_bullets[i].active = 1;
+            return;
+        }
 }
 
 void read_input()
@@ -194,7 +216,11 @@ void read_input()
         tank.x += 1;
     if (is_pressed(VSGL_W))
         shot();
+    if (is_pressed(VSGL_M))
+        alien_shot();
 }
+
+
 
 bool collide(Object a, Object b)
 {
@@ -207,7 +233,7 @@ bool collide(Object a, Object b)
 void update_bullet()
 {
     if (bullet.active)
-        bullet.y -= 0.25;
+        bullet.y -= SPEED;
     if (bullet.y <= 0)
         bullet.active = 0;
 }
@@ -216,6 +242,27 @@ void draw_bullet()
 {
     if (bullet.active)
         draw_filled_rect(bullet.x,bullet.y,bullet.w,bullet.h,Color(255,255,255,255));
+}
+
+void update_alien_bullets()
+{
+    int i;
+    for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
+    {
+        if (alien_bullets[i].active)
+            alien_bullets[i].y += SPEED;
+        if (alien_bullets[i].y >= SCREEN_HEIGHT)
+            alien_bullets[i].active = 0;
+    }
+
+}
+
+void draw_alien_bullets()
+{
+    int i;
+    for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
+       if (alien_bullets[i].active)
+        draw_filled_rect(alien_bullets[i].x,alien_bullets[i].y,5,5,Color(255,255,255,255));
 }
 
 bool alien_striked()
@@ -289,12 +336,15 @@ int main(int argc, char* argv[]) {
     {
         update_ships();
         read_input();
+        alien_shot();
         update_bullet();
+        update_alien_bullets();
         draw_filled_rect(0,0,get_window_width(),get_window_height(),
                          Color(0,0,0,255)); //the background
         draw_ships();
         draw_tank();
         draw_bullet();
+        draw_alien_bullets();
         if (alien_striked())
             points += hit_value;
         if (lost_life())
