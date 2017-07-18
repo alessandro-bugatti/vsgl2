@@ -339,6 +339,12 @@ void game_over()
     draw_text(main_font,80,"Game over",(get_window_width()-w)/2,
                   (get_window_height()-h)/2,
                   Color(255,255,255,255));
+    char score[100];
+    snprintf(score,100,"Score: %05d",points);
+    w = text_width(main_font,60,score);
+    draw_text(main_font,60,score,(get_window_width()-w)/2,
+                  (get_window_height()-h)/2 + 100,
+                  Color(255,255,255,255));
     update();
 
 }
