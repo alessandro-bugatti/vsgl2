@@ -18,6 +18,8 @@ const int MAX_ALIEN_BULLETS = 5;
 const int N_ROWS = 4;
 const int DIM = 30;
 const float SPEED = 0.25;
+const float BULLET_SPEED = 0.65;
+const float ALIEN_BULLET_SPEED = 0.25;
 const int SPACE = 10;
 const int V_MOVE = 20;
 const int SCREEN_WIDTH = 640;
@@ -170,6 +172,8 @@ void init_tank()
     strncpy(tank.name, "images/tank.png",30);
     tank.x = DIM;
     tank.y = SCREEN_HEIGHT*0.9;
+    tank.w = 30;
+    tank.h = 15;
     tank.active = 1;
     bullet.h = 5;
     bullet.w = 5;
@@ -220,10 +224,8 @@ void read_input()
         tank.x -= 1;
     if (is_pressed(VSGL_RIGHT))
         tank.x += 1;
-    if (is_pressed(VSGL_W))
+    if (is_pressed(VSGL_SPACE))
         shot();
-    if (is_pressed(VSGL_M))
-        alien_shot();
 }
 
 
@@ -239,7 +241,7 @@ bool collide(Object a, Object b)
 void update_bullet()
 {
     if (bullet.active)
-        bullet.y -= SPEED;
+        bullet.y -= BULLET_SPEED;
     if (bullet.y <= 0)
         bullet.active = 0;
 }
@@ -257,7 +259,7 @@ void update_alien_bullets()
     for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
     {
         if (alien_bullets[i].active)
-            alien_bullets[i].y += SPEED;
+            alien_bullets[i].y += ALIEN_BULLET_SPEED;
         if (alien_bullets[i].y >= SCREEN_HEIGHT)
             alien_bullets[i].active = 0;
     }
@@ -289,6 +291,17 @@ bool alien_striked()
     return false;
 }
 
+bool tank_striked()
+{
+    int i, j;
+    for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
+       if (alien_bullets[i].active &&
+            collide(alien_bullets[i],tank)){
+            return true;
+        }
+    return false;
+}
+
 void draw_points()
 {
     char s[20];
@@ -312,6 +325,7 @@ bool lost_life()
         if (alien_ships[i][j].active &&
             alien_ships[i][j].y + alien_ships[i][j].h > tank.y)
             return true;
+    if (tank_striked()) return true;
     return false;
 }
 
