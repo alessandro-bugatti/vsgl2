@@ -203,11 +203,30 @@ bool recharged()
     return false;
 }
 
+int which_ship_shooting()
+{
+    int ship = rand()%N_SHIPS;
+    int i, sum = 0;
+    //check if at least one ship is still alive in the column
+    //selected by ship variable
+    for (i = 0; i < N_ROWS; i++)
+        sum += alien_ships[i][ship].active;
+    //no one ship is alive in the column
+    //selected by ship variable,so return -1
+    if (sum == 0)
+        return -1;
+    //else return column selected
+    return ship;
+}
+
 void alien_shot()
 {
     if (!recharged())
         return;
     last_shot_time = ms_time();
+    int column = which_ship_shooting();
+    if (column == -1)
+        return;
     int i;
     for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
         if (!alien_bullets[i].active)
