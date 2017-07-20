@@ -238,6 +238,14 @@ bool collide(Object a, Object b)
              a.x + a.w < b.x);
 }
 
+void update_tank()
+{
+    if (tank.x < 0)
+        tank.x = 0;
+    if (tank.x + tank.w > SCREEN_WIDTH)
+        tank.x = SCREEN_WIDTH - tank.w;
+}
+
 void update_bullet()
 {
     if (bullet.active)
@@ -366,6 +374,7 @@ int main(int argc, char* argv[]) {
         update_ships();
         read_input();
         alien_shot();
+        update_tank();
         update_bullet();
         update_alien_bullets();
         draw_filled_rect(0,0,get_window_width(),get_window_height(),
