@@ -17,7 +17,7 @@ const int N_SHIPS = 10;
 const int MAX_ALIEN_BULLETS = 5;
 const int N_ROWS = 4;
 const int DIM = 30;
-const float SPEED = 0.25;
+const float SPEED = 0.15;
 const float BULLET_SPEED = 0.65;
 const float ALIEN_BULLET_SPEED = 0.25;
 const int SPACE = 10;
@@ -331,7 +331,7 @@ bool lost_life()
     for (i = 0; i < N_ROWS; i++)
         for (j = 0; j < N_SHIPS; j++)
         if (alien_ships[i][j].active &&
-            alien_ships[i][j].y + alien_ships[i][j].h > tank.y)
+            (alien_ships[i][j].y + alien_ships[i][j].h) > tank.y)
             return true;
     if (tank_striked()) return true;
     return false;
