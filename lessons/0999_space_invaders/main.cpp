@@ -270,7 +270,7 @@ void update_bullet()
 {
     if (bullet.active)
         bullet.y -= BULLET_SPEED;
-    if (bullet.y <= 0)
+    if (bullet.y <= alien_ships[0][0].y)
         bullet.active = 0;
 }
 
