@@ -192,6 +192,7 @@ void shot()
         bullet.x = tank.x + tank.w/2;
         bullet.y = tank.y;
         bullet.active = 1;
+        play_sound("sounds/shot.wav");
     }
 }
 
@@ -214,6 +215,7 @@ void alien_shot()
             alien_bullets[i].x = rand()%N_SHIPS*(DIM+SPACE) + alien_ships[0][0].x;
             alien_bullets[i].y = alien_ships[N_ROWS-1][0].y + DIM;
             alien_bullets[i].active = 1;
+            play_sound("sounds/shot.wav");
             return;
         }
 }
@@ -294,6 +296,7 @@ bool alien_striked()
             alien_ships[i][j].active = 0;
             bullet.active = 0;
             bullet.y = tank.y;
+            play_sound("sounds/explode.wav");
             return true;
         }
     return false;
@@ -305,6 +308,7 @@ bool tank_striked()
     for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
        if (alien_bullets[i].active &&
             collide(alien_bullets[i],tank)){
+            play_sound("sounds/explode.wav");
             return true;
         }
     return false;
