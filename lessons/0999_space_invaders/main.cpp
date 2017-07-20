@@ -367,6 +367,7 @@ int main(int argc, char* argv[]) {
     right_border = (get_window_width() - SPACE*2 - (DIM+SPACE)*N_SHIPS);
     init_ships();
     init_tank();
+    play_music("sounds/loopy.wav");
 
     //splashscreen();
     while(!done() && lives > 0)
@@ -395,6 +396,7 @@ int main(int argc, char* argv[]) {
         draw_lives();
         update();
     }
+    stop_music();
     game_over();
     wait_for_button_pressed();
     //close the library and clean up everything
