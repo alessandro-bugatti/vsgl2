@@ -17,7 +17,7 @@ const int N_SHIPS = 10;
 const int MAX_ALIEN_BULLETS = 5;
 const int N_ROWS = 4;
 const int DIM = 30;
-const float SPEED = 0.15;
+float SPEED = 0.15;
 const float BULLET_SPEED = 0.65;
 const float ALIEN_BULLET_SPEED = 0.25;
 const int SPACE = 10;
@@ -45,6 +45,7 @@ const char main_font[] = "vt323.ttf";
 Object alien_ships[N_ROWS][N_SHIPS];
 Object tank, bullet;
 Object alien_bullets[MAX_ALIEN_BULLETS];
+int level = 1;
 double spostamento_x;
 int dir;
 int right_border;
@@ -249,8 +250,6 @@ void read_input()
         shot();
 }
 
-
-
 bool collide(Object a, Object b)
 {
     return !(a.y > b.y + b.h ||
@@ -336,8 +335,8 @@ bool tank_striked()
 void draw_points()
 {
     char s[20];
-    sprintf(s,"%05d", points);
-    draw_text(main_font,20,s,get_window_width()*9/10,
+    sprintf(s,"Level %d %05d", level, points);
+    draw_text(main_font,20,s,get_window_width()*8/10,
                   10,
                   Color(255,255,255,255));
 }
@@ -358,6 +357,17 @@ bool lost_life()
             return true;
     if (tank_striked()) return true;
     return false;
+}
+
+
+bool level_completed()
+{
+    int i, j;
+    for (i = 0; i < N_ROWS; i++)
+        for (j = 0; j < N_SHIPS; j++)
+            if (alien_ships[i][j].active == 1)
+                return false;
+    return true;
 }
 
 void game_over()
@@ -414,6 +424,14 @@ int main(int argc, char* argv[]) {
             init_ships();
             init_tank();
             lives--;
+        }
+        if (level_completed())
+        {
+            init_ships();
+            init_tank();
+            SPEED += 0.05;
+            lives++;
+            level++;
         }
         draw_points();
         draw_lives();
