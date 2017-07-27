@@ -148,6 +148,11 @@ bool done()
     return isDone;
 }
 
+void undone()
+{
+    isDone = false;
+}
+
 void update()
 {
     SDL_Event e;
