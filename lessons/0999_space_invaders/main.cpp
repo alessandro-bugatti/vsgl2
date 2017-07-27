@@ -11,6 +11,7 @@ using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::utils;
 using namespace vsgl2::io;
+using namespace vsgl2::audio;
 
 
 const int N_SHIPS = 10;
@@ -33,6 +34,8 @@ const char ship[][30] ={
     "images/four.png"
 };
 
+
+
 struct Object{
     double x, y;
     int w,h;
@@ -40,11 +43,17 @@ struct Object{
     int active;
 };
 
+struct Score{
+    char name[4];
+    int score;
+};
 
 const char main_font[] = "vt323.ttf";
+const char scores_file[] = "scores.txt";
 Object alien_ships[N_ROWS][N_SHIPS];
 Object tank, bullet;
 Object alien_bullets[MAX_ALIEN_BULLETS];
+Score best_scores[10];
 int level = 1;
 double spostamento_x;
 int dir;
@@ -53,6 +62,127 @@ int points = 0;
 int hit_value = 100;
 int lives = 3;
 int last_shot_time = 0;
+
+void read_best_scores()
+{
+    FILE *in = fopen(scores_file,"r");
+    if (in == NULL)
+        return;
+    int cont = 0;
+    while (fscanf(in,"%s %d",best_scores[cont].name,
+                  &best_scores[cont].score) != EOF && cont < 10)
+        cont++;
+}
+
+void save_best_scores()
+{
+    FILE *out = fopen(scores_file,"w");
+    if (out == NULL)
+        return;
+    int cont = 0;
+    while (best_scores[cont].name[0] != '\0')
+    {
+        fprintf(out, "%s %d\n", best_scores[cont].name,
+                best_scores[cont].score);
+        cont++;
+    }
+}
+
+int minimum_score()
+{
+    return best_scores[9].score;
+}
+
+char read_key()
+{
+    SDL_Event e;
+    bool done = false;
+    while(!done)
+    {
+        delay(1); //to avoid to hung the CPU
+        if ( SDL_PollEvent(&e) )
+        {
+            if (e.type == SDL_KEYDOWN)
+                return (char)e.key.keysym.sym;
+        }
+    }
+
+}
+
+void insert_name(char *s)
+{
+    int i;
+    draw_filled_rect(0,0,get_window_width(), get_window_height(),
+                         Color(0,0,0,255));
+    draw_text(main_font,60,"INSERT YOUR NAME",SCREEN_WIDTH/4,
+                  SCREEN_HEIGHT/4,
+                  Color(255,255,255,255));
+    update();
+    for (i = 0; i < 3; i++)
+    {
+        char c = read_key();
+        c = toupper(c);
+        s[i] = c;
+        s[i+1] = '\0';
+        draw_filled_rect(0,0,get_window_width(), get_window_height(),
+                         Color(0,0,0,255));
+        draw_text(main_font,60,"INSERT YOUR NAME",SCREEN_WIDTH/4,
+                  SCREEN_HEIGHT/4,
+                  Color(255,255,255,255));
+        draw_text(main_font,100,s,SCREEN_WIDTH/3,
+                  SCREEN_HEIGHT/2,
+                  Color(255,255,255,255));
+        update();
+    }
+    wait_for_button_pressed();
+}
+
+void add_new_record()
+{
+    int i = 0;
+    while (best_scores[i].score > points) i++;
+    char temp[100];
+    insert_name(temp);
+    int pos = i;
+    for (int j = 9; j > pos; j--)
+    {
+        best_scores[j] = best_scores[j-1];
+    }
+    strncpy(best_scores[pos].name,temp,3);
+    best_scores[pos].score = points;
+}
+
+
+void draw_best_scores()
+{
+    int i = 0;
+    int w = text_width(main_font,80,"Best scores");
+    int h = text_height(main_font,80,"Best scores");
+
+    draw_filled_rect(0,0,get_window_width(), get_window_height(),
+                         Color(0,0,0,255));
+    draw_text(main_font,80,"Best scores",(get_window_width()-w)/2,
+                  10,
+                  Color(255,255,255,255));
+    for (i = 0; i < 10 ; i++)
+    {
+        if (best_scores[i].name[0] != '\0')
+            draw_text(main_font,34,best_scores[i].name,180,
+                  100 + 36*i,
+                  Color(255,255,255,255));
+        else
+            draw_text(main_font,34,"___",180,
+                  100 + 36*i,
+                  Color(255,255,255,255));
+        char score[100];
+        snprintf(score,100,"%05d",best_scores[i].score);
+        draw_text(main_font,34,score,320,
+                  100 + 36*i,
+                  Color(255,255,255,255));
+
+    }
+    update();
+}
 
 void splashscreen()
 {
@@ -359,7 +489,6 @@ bool lost_life()
     return false;
 }
 
-
 bool level_completed()
 {
     int i, j;
@@ -398,11 +527,11 @@ int main(int argc, char* argv[]) {
     set_window(640,480,"Vsgl2 Space Invaders");
     int i;
     right_border = (get_window_width() - SPACE*2 - (DIM+SPACE)*N_SHIPS);
+    read_best_scores();
     init_ships();
     init_tank();
     play_music("sounds/loopy.wav");
-
-    //splashscreen();
+    splashscreen();
     while(!done() && lives > 0)
     {
         update_ships();
@@ -437,9 +566,14 @@ int main(int argc, char* argv[]) {
         draw_lives();
         update();
     }
-    stop_music();
     game_over();
     wait_for_button_pressed();
+    if (points >= minimum_score())
+        add_new_record();
+    draw_best_scores();
+    wait_for_button_pressed();
+    stop_music();
+    save_best_scores();
     //close the library and clean up everything
     close();
     return 0;
