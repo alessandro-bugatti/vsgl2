@@ -116,6 +116,14 @@ namespace video
 bool done();
 
 /**
+* \brief Use this function to reset the isDone glabal variable to its initial state (false)
+* This can be useful when you want to use the done() function more then one time
+* inside a program, i.e. in a video game to restart a new game
+*/
+void undone();
+
+
+/**
 * \brief Use this function to update the screen after drawing on it
 * Typically called at the end of the main loop
 */
