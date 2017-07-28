@@ -519,6 +519,25 @@ void game_over()
 
 }
 
+void repeat_game()
+{
+    int w = text_width(main_font,80,"Play again?");
+    int h = text_height(main_font,80,"Play again?");
+
+    draw_filled_rect(0,0,get_window_width(), get_window_height(),
+                         Color(0,0,0,255));
+    draw_text(main_font,80,"Play again?",(get_window_width()-w)/2,
+                  (get_window_height()-h)/2,
+                  Color(255,255,255,255));
+    w = text_width(main_font,80,"[y/n]");
+    h = text_height(main_font,80,"[y/n]");
+    draw_text(main_font,80,"[y/n]",(get_window_width()-w)/2,
+                  (get_window_height()-h)/2 + 80,
+                  Color(255,255,255,255));
+    update();
+
+}
+
 int main(int argc, char* argv[]) {
 
     //init the library
@@ -528,50 +547,56 @@ int main(int argc, char* argv[]) {
     int i;
     right_border = (get_window_width() - SPACE*2 - (DIM+SPACE)*N_SHIPS);
     read_best_scores();
-    init_ships();
-    init_tank();
     play_music("sounds/loopy.wav");
     splashscreen();
-    while(!done() && lives > 0)
-    {
-        update_ships();
-        read_input();
-        alien_shot();
-        update_tank();
-        update_bullet();
-        update_alien_bullets();
-        draw_filled_rect(0,0,get_window_width(),get_window_height(),
-                         Color(0,0,0,255)); //the background
-        draw_ships();
-        draw_tank();
-        draw_bullet();
-        draw_alien_bullets();
-        if (alien_striked())
-            points += hit_value;
-        if (lost_life())
+    do{
+        lives = 3;
+        points = 0;
+        undone();
+        init_ships();
+        init_tank();
+        while(!done() && lives > 0)
         {
-            init_ships();
-            init_tank();
-            lives--;
+            update_ships();
+            read_input();
+            alien_shot();
+            update_tank();
+            update_bullet();
+            update_alien_bullets();
+            draw_filled_rect(0,0,get_window_width(),get_window_height(),
+                             Color(0,0,0,255)); //the background
+            draw_ships();
+            draw_tank();
+            draw_bullet();
+            draw_alien_bullets();
+            if (alien_striked())
+                points += hit_value;
+            if (lost_life())
+            {
+                init_ships();
+                init_tank();
+                lives--;
+            }
+            if (level_completed())
+            {
+                init_ships();
+                init_tank();
+                SPEED += 0.05;
+                lives++;
+                level++;
+            }
+            draw_points();
+            draw_lives();
+            update();
         }
-        if (level_completed())
-        {
-            init_ships();
-            init_tank();
-            SPEED += 0.05;
-            lives++;
-            level++;
-        }
-        draw_points();
-        draw_lives();
-        update();
-    }
-    game_over();
-    wait_for_button_pressed();
-    if (points >= minimum_score())
-        add_new_record();
-    draw_best_scores();
-    wait_for_button_pressed();
+        game_over();
+        wait_for_button_pressed();
+        if (points >= minimum_score())
+            add_new_record();
+        draw_best_scores();
+        wait_for_button_pressed();
+        repeat_game();
+    }while('y' == read_key());
     stop_music();
     save_best_scores();
     //close the library and clean up everything
