@@ -434,7 +434,7 @@ void draw_alien_bullets()
                          Color(255,255,255,255));
 }
 
-bool alien_striked()
+bool alien_struck()
 {
     int i, j;
     for (i = 0; i < N_ROWS; i++)
@@ -450,7 +450,7 @@ bool alien_striked()
     return false;
 }
 
-bool tank_striked()
+bool tank_struck()
 {
     int i, j;
     for (int i = 0; i < MAX_ALIEN_BULLETS; i++)
@@ -485,7 +485,7 @@ bool lost_life()
         if (alien_ships[i][j].active &&
             (alien_ships[i][j].y + alien_ships[i][j].h) > tank.y)
             return true;
-    if (tank_striked()) return true;
+    if (tank_struck()) return true;
     return false;
 }
 
@@ -569,7 +569,7 @@ int main(int argc, char* argv[]) {
             draw_tank();
             draw_bullet();
             draw_alien_bullets();
-            if (alien_striked())
+            if (alien_struck())
                 points += hit_value;
             if (lost_life())
             {
