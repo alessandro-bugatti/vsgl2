@@ -64,9 +64,9 @@ To install VSGL2 on MacOs devices:
 2. Run this: 
 
 	```
-	brew install sdl2
+	brew install sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
 	sudo chown root:wheel /usr/local/bin/brew
-	brew link sdl2
+	brew link sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
 	```
 
 ## Installing VSGL2 library
