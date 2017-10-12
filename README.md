@@ -53,15 +53,17 @@ and that's it.
 
 ### MacOS
 
-To install VSGL2 on MacOs devices: 
+To install vsgl2 on MacOs devices: 
 
-1. If you haven't got it, install brew by running this command: 
+1. Install CodeBlocks [here] (http://www.codeblocks.org/downloads) if you want, but I don't recommend it because MacOs version is very unstable. Instead of using CodeBlocks you can compile using g++ in the terminal (see below) and code using a text editor like SublimeText, Atom, Vim (only for pros), Emacs...  
+
+2. If you haven't got it, install [homebrew](https://brew.sh/index_it.html): 
  	
 	```
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	```	
-	Are you looking for further informations on brew? Check [here] (https://brew.sh/index_it.html).
-2. Run this to install all the libraries you'll need: 
+
+3. Install sdl & sdl2: 
 
 	```
 	brew install sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
@@ -84,10 +86,16 @@ git pull https://github.com/alessandro-bugatti/vsgl2.git
 
 There is a **.cbp** file inside each ```lesson```, it is a good place to start using the library with Codeblocks.
 
-If you prefer using a text editor and compiling in the terminal with g++, run this command:
+If you prefer compiling in the terminal using g++:
 
 ```
-g++ your/file/path vsgl2.cpp/file/path -lsdl2 -lsdl_net -lsdl_image -lsdl_mixer -lsdl_ttf  -std=c++11 -stdlib=libc++
+g++ your/file/path vsgl2.cpp/file/path -lsdl2 -lsdl2_net -lsdl2_image -lsdl2_mixer -lsdl2_ttf  -std=c++11 -stdlib=libc++
+```
+
+And run what you've just compiled: 
+
+```
+./a.out
 ```
 
 ## Design
