@@ -53,9 +53,9 @@ and that's it.
 
 ### MacOS
 
-To install vsgl2 on MacOs devices: 
+To install vsgl2 on MacOS devices: 
 
-1. Install CodeBlocks [here](http://www.codeblocks.org/downloads) if you want, but I don't recommend it because MacOs version is very unstable. Instead of using CodeBlocks you can compile using g++ in the terminal (see below) and code using a text editor like SublimeText, Atom, Vim (only for pros), Emacs...  
+1. Install CodeBlocks [here](http://www.codeblocks.org/downloads) if you want, but I don't recommend it because MacOS version is very unstable. Instead of using CodeBlocks you can compile using g++ in the terminal (see below) and code using a text editor like SublimeText, Atom, Vim (only for pros), Emacs...  
 
 2. If you haven't got it, install [homebrew](https://brew.sh/index_it.html): 
  	
