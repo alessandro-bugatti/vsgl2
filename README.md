@@ -52,7 +52,24 @@ sudo apt-get install libsdl2-dev libsdl2-net-dev libsdl2-image-dev libsdl2-mixer
 and that's it.
 
 ### MacOS
-I haven't any device with MacOS, I know for sure that it is possible to install and execute programs using VSGL2 library, if someone wants to help editing this section is welcomed.
+
+To install vsgl2 on MacOS devices: 
+
+1. Install CodeBlocks [here](http://www.codeblocks.org/downloads) if you want, but I don't recommend it because MacOS version is very unstable. Instead of using CodeBlocks you can compile using g++ in the terminal (see below) and code using a text editor like SublimeText, Atom, Vim (only for pros), Emacs...  
+
+2. If you haven't got it, install [homebrew](https://brew.sh/index_it.html): 
+ 	
+	```
+	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+	```	
+
+3. Install sdl & sdl2: 
+
+	```
+	brew install sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
+	sudo chown root:wheel /usr/local/bin/brew
+	brew link sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
+	```
 
 ## Installing VSGL2 library
 The library is platform independent, so the steps are the same in all the platforms.
@@ -69,9 +86,22 @@ git pull https://github.com/alessandro-bugatti/vsgl2.git
 
 There is a **.cbp** file inside each ```lesson```, it is a good place to start using the library with Codeblocks.
 
+If you prefer compiling in the terminal using g++:
+
+```
+g++ your/file/path vsgl2.cpp/file/path -lsdl2 -lsdl2_net -lsdl2_image -lsdl2_mixer -lsdl2_ttf  -std=c++11 -stdlib=libc++
+```
+
+And run what you've just compiled: 
+
+```
+./a.out
+```
+
 ## Design
 Main features:
 - Simple, every functions has to be clear and easy to use
+
 - Only functions, not classes or objects (from the user prospective, the library code uses C++)
 - Not a general library to do all the things, but only to do certain things in a easy manner. If you want to have full control of all the aspects, maybe it could be better to use SDL instead.
 
