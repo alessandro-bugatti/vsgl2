@@ -61,7 +61,7 @@ To install VSGL2 on MacOs devices:
 	/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 	```	
 	Are you looking for further informations on brew? Check [here] (https://brew.sh/index_it.html).
-2. Run this: 
+2. Run this to install all the libraries you'll need: 
 
 	```
 	brew install sdl2 sdl2_net sdl2_image sdl2_mixer sdl2_ttf
@@ -84,6 +84,11 @@ git pull https://github.com/alessandro-bugatti/vsgl2.git
 
 There is a **.cbp** file inside each ```lesson```, it is a good place to start using the library with Codeblocks.
 
+If you prefer using a text editor and compiling in the terminal with g++, run this command:
+
+```
+g++ your/file/path vsgl2.cpp/file/path -lsdl2 -lsdl_net -lsdl_image -lsdl_mixer -lsdl_ttf  -std=c++11 -stdlib=libc++
+```
 
 ## Design
 Main features:
