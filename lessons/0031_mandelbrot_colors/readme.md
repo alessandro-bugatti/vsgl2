@@ -1,5 +1,5 @@
 # Mandelbrot set with colors
-This example extends the one about Mandelbrot set adding colors to the image, obtaining the following result
+This example extends the one about the Mandelbrot set adding colors to the image, obtaining the following result
 
 ![Mandelbrot set colored](./images/screen.png)
 

@@ -1,5 +1,5 @@
 # Mandelbrot set
-In this example the ```draw_point``` function is used to draw the Mandelbrot set (more information about Mandelbrot set can be found on this [Wikipedia page](https://en.wikipedia.org/wiki/Mandelbrot_set)).
+In this example the ```draw_point``` function is used to draw the Mandelbrot set (more information about the Mandelbrot set can be found on this [Wikipedia page](https://en.wikipedia.org/wiki/Mandelbrot_set)).
 
 In this first example the figure is black and white, where black points are points where the function
 
@@ -11,15 +11,15 @@ The results will be the following
 
 ![Mandelbrot set](./images/screen.png)
 
-Since the function needs complex numbers, a structure is defined as follows (also standard library complex could be used):
+Since the function needs complex numbers, a structure is defined as follows (standard library complex could also be used):
 
 ```c
 struct Complex{
     double real, imm;
 };
 ```
-and addition and multiplication are defined as well to compute the function.
-The function ```diverge``` checks if a complex number *C* diverge and this information is used to draw the point black or white. The evolution of a number *C* is computed using this recurrence:
+and addition and multiplication are also defined to compute the function.
+The function ```diverge``` checks if a complex number *C* diverges and this information is used to draw the point black or white. The evolution of a number *C* is computed using this recurrence:
 
 ![Recurrence](./images/iteration.png)
 
@@ -41,7 +41,7 @@ int diverge(Complex C)
   return 0;
 }
 ```
-If the modulus (or magnitude) of Z becomes greater than RADIUS before MAX_ITERATIONS, the function will return 1, meaning that C diverge. Otherwise it will return 0, meaning that C does not diverge.
+If the modulus (or magnitude) of Z becomes greater than RADIUS before MAX_ITERATIONS, the function will return 1, meaning that C diverges. Otherwise it will return 0, meaning that C does not diverge.
 
 A simple formula is used to translate the coordinates from the screen coordinate system to the complex plane coordinates:
 
