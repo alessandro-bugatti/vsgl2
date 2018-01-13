@@ -245,6 +245,21 @@ namespace io
     bool is_pressed(int key);
 
 /**
+*   \brief Use to read text from the user, the return key stops the input
+*   \param font The filename of the font.
+*   \param dim Font dimension
+*   \param x The x coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param y The y coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param c The color of the text
+*   \return The string typed from the user
+*
+*   \todo Translate all the SDL2 scancodes into VSGL codes
+*/
+    string read_text(string font, int dim, int x, int y, Color c);
+
+/**
 *   \brief Use to get the mouse x coordinate
 *   \return The value of mouse x coordinate
 */

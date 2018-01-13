@@ -253,7 +253,7 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     r.y = y;
     r.w = w;
     r.h = h;
-    SDL_SetTextureAlphaMod( images[image].texture, images[image].alpha);
+    SDL_SetTextureAlphaMod( images[image].texture, alpha);
     SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
 }
 
@@ -311,6 +311,45 @@ bool is_pressed(int key)
 {
     currentKeyStates = SDL_GetKeyboardState( NULL );
     return (bool)currentKeyStates[key];
+}
+
+string read_text(string font, int dim, int x, int y, Color c)
+{
+    std::string inputText;
+    SDL_Event e;
+    bool done = false;
+
+    while( !done )
+    {
+        delay(1); //to avoid to hung the CPU
+        bool renderText = false;
+
+        //Handle events on queue
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                close();
+                exit(0);
+            }
+            else if( e.key.keysym.sym == SDLK_RETURN )
+            {
+                done = true;
+            }
+            else if(  e.type == SDL_TEXTINPUT )
+            {
+                inputText += e.text.text;
+                renderText = true;
+            }
+        }
+        if( renderText )
+        {
+            draw_text(font,dim,inputText.c_str(),  x,  y,  c);
+            update();
+        }
+    }
+    return inputText;
 }
 
 int get_mouse_x()
