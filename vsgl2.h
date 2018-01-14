@@ -245,7 +245,7 @@ namespace io
     bool is_pressed(int key);
 
 /**
-*   \brief Use to read text from the user, the return key stops the input
+*   \brief Use to read text from the user, the return key stops the input.
 *   \param font The filename of the font.
 *   \param dim Font dimension
 *   \param x The x coordinate of the upper left corner of the text
@@ -254,8 +254,7 @@ namespace io
 *   inside the window coordinates
 *   \param c The color of the text
 *   \return The string typed from the user
-*
-*   \todo Translate all the SDL2 scancodes into VSGL codes
+*   \warning This function is blocking, i.e. the program is stopped until the user presses the return key.
 */
     string read_text(string font, int dim, int x, int y, Color c);
 
