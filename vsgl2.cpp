@@ -318,7 +318,15 @@ string read_text(string font, int dim, int x, int y, Color c)
     std::string inputText;
     SDL_Event e;
     bool done = false;
-
+    SDL_Surface *screen = SDL_GetWindowSurface(window);
+    SDL_Rect r;
+    r.x= 0;
+    r.y = 0;
+    r.w = width;
+    r.h = height;
+    SDL_Texture *texture =
+    SDL_CreateTextureFromSurface(renderer, screen);
+    SDL_FreeSurface(screen);
     while( !done )
     {
         delay(1); //to avoid to hung the CPU
@@ -337,6 +345,12 @@ string read_text(string font, int dim, int x, int y, Color c)
             {
                 done = true;
             }
+            else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_BACKSPACE )
+            {
+                if (inputText.size()>0)
+                    inputText.pop_back();
+                renderText = true;
+            }
             else if(  e.type == SDL_TEXTINPUT )
             {
                 inputText += e.text.text;
@@ -345,10 +359,14 @@ string read_text(string font, int dim, int x, int y, Color c)
         }
         if( renderText )
         {
-            draw_text(font,dim,inputText.c_str(),  x,  y,  c);
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer,texture,NULL,&r);
+            if (inputText.size() > 0)
+                draw_text(font,dim,inputText.c_str(),  x,  y,  c);
             update();
         }
     }
+    SDL_DestroyTexture(texture);
     return inputText;
 }
 
