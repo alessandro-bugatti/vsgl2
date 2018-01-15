@@ -98,6 +98,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142">done</a> ()</td></tr>
 <tr class="memdesc:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to check when to stop the main loop.  <a href="#ad9a5ec16d009cae2fc6d298db3bf8142">More...</a><br/></td></tr>
 <tr class="separator:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af310fa57c29f64058a80c569818b2845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#af310fa57c29f64058a80c569818b2845">undone</a> ()</td></tr>
+<tr class="memdesc:af310fa57c29f64058a80c569818b2845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to reset the isDone glabal variable to its initial state (false) This can be useful when you want to use the <a class="el" href="namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142" title="Use this function to check when to stop the main loop. ">done()</a> function more then one time inside a program, i.e. in a video game to restart a new game.  <a href="#af310fa57c29f64058a80c569818b2845">More...</a><br/></td></tr>
+<tr class="separator:af310fa57c29f64058a80c569818b2845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
 <tr class="memdesc:ac5c54df7ed3b930268c8d7752c101725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to update the screen after drawing on it Typically called at the end of the main loop.  <a href="#ac5c54df7ed3b930268c8d7752c101725">More...</a><br/></td></tr>
 <tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -411,6 +414,23 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="af310fa57c29f64058a80c569818b2845"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void undone </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use this function to reset the isDone glabal variable to its initial state (false) This can be useful when you want to use the <a class="el" href="namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142" title="Use this function to check when to stop the main loop. ">done()</a> function more then one time inside a program, i.e. in a video game to restart a new game. </p>
+
+</div>
+</div>
 <a class="anchor" id="ac5c54df7ed3b930268c8d7752c101725"></a>
 <div class="memitem">
 <div class="memproto">
@@ -431,7 +451,7 @@ Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 9 2017 22:34:28 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 15 2018 17:16:54 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

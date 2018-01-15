@@ -147,6 +147,9 @@ Functions</h2></td></tr>
 <tr class="memitem:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142">done</a> ()</td></tr>
 <tr class="memdesc:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to check when to stop the main loop.  <a href="#ad9a5ec16d009cae2fc6d298db3bf8142">More...</a><br/></td></tr>
 <tr class="separator:ad9a5ec16d009cae2fc6d298db3bf8142"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af310fa57c29f64058a80c569818b2845"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#af310fa57c29f64058a80c569818b2845">undone</a> ()</td></tr>
+<tr class="memdesc:af310fa57c29f64058a80c569818b2845"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to reset the isDone glabal variable to its initial state (false) This can be useful when you want to use the <a class="el" href="namespacevsgl2_1_1video.html#ad9a5ec16d009cae2fc6d298db3bf8142" title="Use this function to check when to stop the main loop. ">done()</a> function more then one time inside a program, i.e. in a video game to restart a new game.  <a href="#af310fa57c29f64058a80c569818b2845">More...</a><br/></td></tr>
+<tr class="separator:af310fa57c29f64058a80c569818b2845"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac5c54df7ed3b930268c8d7752c101725"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1video.html#ac5c54df7ed3b930268c8d7752c101725">update</a> ()</td></tr>
 <tr class="memdesc:ac5c54df7ed3b930268c8d7752c101725"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use this function to update the screen after drawing on it Typically called at the end of the main loop.  <a href="#ac5c54df7ed3b930268c8d7752c101725">More...</a><br/></td></tr>
 <tr class="separator:ac5c54df7ed3b930268c8d7752c101725"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +183,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0304fde2a4a62be47e65674648b6e512"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#a0304fde2a4a62be47e65674648b6e512">is_pressed</a> (int key)</td></tr>
 <tr class="memdesc:a0304fde2a4a62be47e65674648b6e512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to check if a button is pressed.  <a href="#a0304fde2a4a62be47e65674648b6e512">More...</a><br/></td></tr>
 <tr class="separator:a0304fde2a4a62be47e65674648b6e512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#afbf1892f842f4332a5f12c27b7f0e3b7">read_text</a> (string font, int dim, int x, int y, <a class="el" href="classvsgl2_1_1_color.html">Color</a> c, uint8_t max_length=0)</td></tr>
+<tr class="memdesc:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to read text from the user, the return key stops the input.  <a href="#afbf1892f842f4332a5f12c27b7f0e3b7">More...</a><br/></td></tr>
+<tr class="separator:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#ae4bb5d5c8af4f3094408c052dcbccff7">get_mouse_x</a> ()</td></tr>
 <tr class="memdesc:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to get the mouse x coordinate.  <a href="#ae4bb5d5c8af4f3094408c052dcbccff7">More...</a><br/></td></tr>
 <tr class="separator:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -304,6 +310,8 @@ Variables</h2></td></tr>
 <tr class="separator:a1643fa9b33d49125c5ec2da5489de122"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c5e0406f217f5f10f79f9e0ad66f78d"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2.html#a8c5e0406f217f5f10f79f9e0ad66f78d">VSGL_ESC</a> = SDL_SCANCODE_ESCAPE</td></tr>
 <tr class="separator:a8c5e0406f217f5f10f79f9e0ad66f78d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85dedb2336e96b0cc4485c03980a9ce4"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2.html#a85dedb2336e96b0cc4485c03980a9ce4">VSGL_SPACE</a> = SDL_SCANCODE_SPACE</td></tr>
+<tr class="separator:a85dedb2336e96b0cc4485c03980a9ce4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a858fbf36fc0dec9bc00d2dcf60cb2d49"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1general.html#a858fbf36fc0dec9bc00d2dcf60cb2d49">FULLSCREEN</a> = SDL_WINDOW_FULLSCREEN</td></tr>
 <tr class="separator:a858fbf36fc0dec9bc00d2dcf60cb2d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -315,7 +323,7 @@ Variables</h2></td></tr>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 9 2017 22:34:27 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 15 2018 17:16:54 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>

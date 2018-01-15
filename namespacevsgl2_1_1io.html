@@ -98,6 +98,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a0304fde2a4a62be47e65674648b6e512"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#a0304fde2a4a62be47e65674648b6e512">is_pressed</a> (int key)</td></tr>
 <tr class="memdesc:a0304fde2a4a62be47e65674648b6e512"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to check if a button is pressed.  <a href="#a0304fde2a4a62be47e65674648b6e512">More...</a><br/></td></tr>
 <tr class="separator:a0304fde2a4a62be47e65674648b6e512"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#afbf1892f842f4332a5f12c27b7f0e3b7">read_text</a> (string font, int dim, int x, int y, <a class="el" href="classvsgl2_1_1_color.html">Color</a> c, uint8_t max_length=0)</td></tr>
+<tr class="memdesc:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to read text from the user, the return key stops the input.  <a href="#afbf1892f842f4332a5f12c27b7f0e3b7">More...</a><br/></td></tr>
+<tr class="separator:afbf1892f842f4332a5f12c27b7f0e3b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacevsgl2_1_1io.html#ae4bb5d5c8af4f3094408c052dcbccff7">get_mouse_x</a> ()</td></tr>
 <tr class="memdesc:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Use to get the mouse x coordinate.  <a href="#ae4bb5d5c8af4f3094408c052dcbccff7">More...</a><br/></td></tr>
 <tr class="separator:ae4bb5d5c8af4f3094408c052dcbccff7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -254,10 +257,75 @@ Functions</h2></td></tr>
 
 </div>
 </div>
+<a class="anchor" id="afbf1892f842f4332a5f12c27b7f0e3b7"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string read_text </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>font</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>dim</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classvsgl2_1_1_color.html">Color</a>&#160;</td>
+          <td class="paramname"><em>c</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>max_length</em> = <code>0</code>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Use to read text from the user, the return key stops the input. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">font</td><td>The filename of the font. </td></tr>
+    <tr><td class="paramname">dim</td><td>Font dimension </td></tr>
+    <tr><td class="paramname">x</td><td>The x coordinate of the upper left corner of the text inside the window coordinates </td></tr>
+    <tr><td class="paramname">y</td><td>The y coordinate of the upper left corner of the text inside the window coordinates </td></tr>
+    <tr><td class="paramname">c</td><td>The color of the text </td></tr>
+    <tr><td class="paramname">max_length</td><td>The maximum length of the text that can be written. The default value is 0, which means that there is no limit to the text length, otherwise the user can write only max_length characters. The value range is from 0 to 255, greater numbers than that will be truncated. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>The string typed from the user </dd></dl>
+<dl class="section warning"><dt>Warning</dt><dd>This function is blocking, i.e. the program is stopped until the user presses the return key. </dd></dl>
+
+</div>
+</div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Fri Jun 9 2017 22:34:27 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
+Generated on Mon Jan 15 2018 17:16:54 for VSGL2 - Very Simple Graphic Library 2 by &#160;<a href="http://www.doxygen.org/index.html">
 <img class="footer" src="doxygen.png" alt="doxygen"/>
 </a> 1.8.5
 </small></address>
