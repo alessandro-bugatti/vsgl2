@@ -253,7 +253,7 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     r.y = y;
     r.w = w;
     r.h = h;
-    SDL_SetTextureAlphaMod( images[image].texture, images[image].alpha);
+    SDL_SetTextureAlphaMod( images[image].texture, alpha);
     SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
 }
 
@@ -311,6 +311,63 @@ bool is_pressed(int key)
 {
     currentKeyStates = SDL_GetKeyboardState( NULL );
     return (bool)currentKeyStates[key];
+}
+
+string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length)
+{
+    std::string inputText;
+    SDL_Event e;
+    bool done = false;
+    SDL_Surface *screen = SDL_GetWindowSurface(window);
+    SDL_Rect r;
+    r.x= 0;
+    r.y = 0;
+    r.w = width;
+    r.h = height;
+    SDL_Texture *texture =
+    SDL_CreateTextureFromSurface(renderer, screen);
+    SDL_FreeSurface(screen);
+    while( !done )
+    {
+        delay(1); //to avoid to hung the CPU
+        bool renderText = false;
+
+        //Handle events on queue
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                close();
+                exit(0);
+            }
+            else if( e.key.keysym.sym == SDLK_RETURN )
+            {
+                done = true;
+            }
+            else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_BACKSPACE )
+            {
+                if (inputText.size()>0)
+                    inputText.pop_back();
+                renderText = true;
+            }
+            else if(  e.type == SDL_TEXTINPUT && (inputText.size() < max_length || max_length == 0) )
+            {
+                inputText += e.text.text;
+                renderText = true;
+            }
+        }
+        if( renderText )
+        {
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer,texture,NULL,&r);
+            if (inputText.size() > 0)
+                draw_text(font,dim,inputText.c_str(),  x,  y,  c);
+            update();
+        }
+    }
+    SDL_DestroyTexture(texture);
+    return inputText;
 }
 
 int get_mouse_x()
