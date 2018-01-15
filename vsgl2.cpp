@@ -313,7 +313,7 @@ bool is_pressed(int key)
     return (bool)currentKeyStates[key];
 }
 
-string read_text(string font, int dim, int x, int y, Color c)
+string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length)
 {
     std::string inputText;
     SDL_Event e;
@@ -351,7 +351,7 @@ string read_text(string font, int dim, int x, int y, Color c)
                     inputText.pop_back();
                 renderText = true;
             }
-            else if(  e.type == SDL_TEXTINPUT )
+            else if(  e.type == SDL_TEXTINPUT && (inputText.size() < max_length || max_length == 0) )
             {
                 inputText += e.text.text;
                 renderText = true;

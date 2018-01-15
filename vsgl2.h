@@ -253,10 +253,11 @@ namespace io
 *   \param y The y coordinate of the upper left corner of the text
 *   inside the window coordinates
 *   \param c The color of the text
+*   \param max_length The maximum length of the text that can be written. The default value is 0, which means that there is no limit to the text length, otherwise the user can write only max_length characters. The value range is from 0 to 255, greater numbers than that will be truncated.
 *   \return The string typed from the user
 *   \warning This function is blocking, i.e. the program is stopped until the user presses the return key.
 */
-    string read_text(string font, int dim, int x, int y, Color c);
+    string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length = 0);
 
 /**
 *   \brief Use to get the mouse x coordinate
