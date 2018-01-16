@@ -253,6 +253,7 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     r.y = y;
     r.w = w;
     r.h = h;
+    SDL_SetTextureBlendMode( images[image].texture, SDL_BLENDMODE_BLEND );
     SDL_SetTextureAlphaMod( images[image].texture, alpha);
     SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
 }
