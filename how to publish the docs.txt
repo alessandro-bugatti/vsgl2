@@ -1,0 +1,7 @@
+# Do development stuff
+git push origin master
+doxygen doxygen.conf
+cd doc/html
+git add .
+git commit -m "Updated documentation at Month day"
+git push origin gh-pages
