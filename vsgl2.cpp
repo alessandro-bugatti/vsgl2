@@ -69,6 +69,13 @@ void init()
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
+    SDL_version compiled;
+    SDL_version linked;
+    SDL_VERSION(&compiled);
+    SDL_GetVersion(&linked);
+    SDL_Log("Built upon SDL2 version:\ncompiled %d.%d.%d\nlinked %d.%d.%d\n",
+             compiled.major, compiled.minor, compiled.patch,
+             linked.major, linked.minor, linked.patch);
 
 
 }
