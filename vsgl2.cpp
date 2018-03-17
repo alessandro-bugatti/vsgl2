@@ -349,7 +349,7 @@ string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length
                 close();
                 exit(0);
             }
-            else if( e.key.keysym.sym == SDLK_RETURN )
+            else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN )
             {
                 done = true;
             }
