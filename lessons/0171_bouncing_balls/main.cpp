@@ -64,8 +64,8 @@ void init_balls(Ball balls[], int n)
         //to avoid balls that starts "joined",
         //the number of balls could be less than MAX_BALLS
 
-        balls[i].x = (i%width)*(get_window_width()/width);
-        balls[i].y = (i/length)*(get_window_height()/length);
+        balls[i].x = (i%width)*((get_window_width() - 2*RAGGIO)/width);
+        balls[i].y = (i/length)*((get_window_height() - 2*RAGGIO)/length);
 
         //Version 2: random distribuited in space,
         //some balls could start "joined"
