@@ -17,14 +17,12 @@ int main(int argc, char* argv[]) {
     draw_image("zen.jpg",0,0,768,432);
     //update the screen
     update();
-    //the program waits for a touch of a button
     wait_for_button_pressed();
     //Second iteration: transparency with a black background
     draw_image("lena.bmp",350,50,200,200);
     draw_image("zen.jpg",0,0,768,432,120);
     //update the screen
     update();
-    //the program waits for a touch of a button
     wait_for_button_pressed();
     //Third iteration: same transparency with a white background;
     draw_filled_rect(0,0,get_window_width(), get_window_height(),Color(255,255,255,255));
@@ -32,7 +30,6 @@ int main(int argc, char* argv[]) {
     draw_image("zen.jpg",0,0,768,432,120);
     //update the screen
     update();
-    //the program waits for a touch of a button
     wait_for_button_pressed();
 
     //close the library and clean up everything
