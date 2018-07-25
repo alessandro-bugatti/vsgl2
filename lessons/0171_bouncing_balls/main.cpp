@@ -45,12 +45,33 @@ int main(int argc, char* argv[]) {
     return 0;
 }
 
+
+
 void init_balls(Ball balls[], int n)
 {
+    /*
+    To switch between version 1 and 2, manually
+    commenting or removing comments from the version
+    you want
+    */
+    //Version 1 parameters
+    unsigned int area = MAX_BALLS * get_window_width() / get_window_height();
+    unsigned int length = sqrt(area);
+    unsigned int width = area/length;
     for (int i = 0;i < n ;i++)
     {
-        balls[i].x = (i/4)*80;//rand()%(get_window_width()-RAGGIO);
-        balls[i].y = (i%5)*70;//rand()%(get_window_height()-RAGGIO);
+        //Version 1: equally distribuited in space,
+        //to avoid balls that starts "joined",
+        //the number of balls could be less than MAX_BALLS
+
+        balls[i].x = (i%width)*(get_window_width()/width);
+        balls[i].y = (i/length)*(get_window_height()/length);
+
+        //Version 2: random distribuited in space,
+        //some balls could start "joined"
+        //balls[i].x = rand()%(get_window_width() - 2*RAGGIO) + RAGGIO;
+        //balls[i].y = rand()%(get_window_height() - 2*RAGGIO) + RAGGIO;
+
         balls[i].vx = (double)rand()/100000;
         balls[i].vy = (double)rand()/100000;
         balls[i].image = "basketball.png";
@@ -112,14 +133,3 @@ void draw(Ball balls[], int n)
         draw_image(balls[i].image, balls[i].x, balls[i].y,
                    RAGGIO, RAGGIO, 255);
 }
-
-int scale_x(double x)
-{
-    return x*get_window_width();
-}
-
-int scale_y(double y)
-{
-    return y*get_window_height();
-}
-
