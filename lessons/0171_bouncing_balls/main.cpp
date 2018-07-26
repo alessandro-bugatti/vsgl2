@@ -10,7 +10,7 @@ using namespace vsgl2::video;
 using namespace vsgl2::utils;
 
 const int MAX_BALLS= 30;
-const int RAGGIO = 30;
+const int RADIUS = 30;
 
 struct Ball{
     double x, y;
@@ -64,13 +64,13 @@ void init_balls(Ball balls[], int n)
         //to avoid balls that starts "joined",
         //the number of balls could be less than MAX_BALLS
 
-        balls[i].x = (i%width)*((get_window_width() - 2*RAGGIO)/width);
-        balls[i].y = (i/length)*((get_window_height() - 2*RAGGIO)/length);
+        balls[i].x = (i%width)*((get_window_width() - 2*RADIUS)/width);
+        balls[i].y = (i/length)*((get_window_height() - 2*RADIUS)/length);
 
         //Version 2: random distribuited in space,
         //some balls could start "joined"
-        //balls[i].x = rand()%(get_window_width() - 2*RAGGIO) + RAGGIO;
-        //balls[i].y = rand()%(get_window_height() - 2*RAGGIO) + RAGGIO;
+        //balls[i].x = rand()%(get_window_width() - 2*RADIUS) + RADIUS;
+        //balls[i].y = rand()%(get_window_height() - 2*RADIUS) + RADIUS;
 
         balls[i].vx = (double)rand()/100000;
         balls[i].vy = (double)rand()/100000;
@@ -85,9 +85,9 @@ void update_position(Ball balls[], int n)
     {
         balls[i].x += balls[i].vx ;
         balls[i].y += balls[i].vy;
-        if (balls[i].x >= get_window_width() - RAGGIO || balls[i].x < 0)
+        if (balls[i].x >= get_window_width() - RADIUS || balls[i].x < 0)
             balls[i].vx = -balls[i].vx;
-        if (balls[i].y >= get_window_height() - RAGGIO || balls[i].y < 0)
+        if (balls[i].y >= get_window_height() - RADIUS || balls[i].y < 0)
             balls[i].vy = -balls[i].vy;
     }
     for (i = 0;i < n ;i++)
@@ -98,7 +98,7 @@ void update_position(Ball balls[], int n)
             double c2 = (balls[i].y - balls[j].y)*
                 (balls[i].y - balls[j].y);
             //Controllo di collisione
-            if (c1 + c2 < 1*(RAGGIO)*(RAGGIO))
+            if (c1 + c2 < 1*(RADIUS)*(RADIUS))
             {
                 double unx, uny, utx, uty;
                 double d;
@@ -131,5 +131,5 @@ void draw(Ball balls[], int n)
 {
     for (int i = 0;i < n;i++)
         draw_image(balls[i].image, balls[i].x, balls[i].y,
-                   RAGGIO, RAGGIO, 255);
+                   RADIUS, RADIUS, 255);
 }
