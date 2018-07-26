@@ -93,6 +93,13 @@ void close();
 void set_window(int w, int h, string title, int fullscreen = 0);
 
 /**
+* \brief Use this function to change the background color
+* \param bg The new background color
+* \warning The alpha channel has to be configured, but it is not used
+*/
+void set_background_color(const Color& bg);
+
+/**
 * \brief Use this function to get the width of the current window
 * \return The width of the current window
 */

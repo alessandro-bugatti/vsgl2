@@ -45,12 +45,15 @@ map<string, Mix_Chunk*> sounds;
 const Uint8* currentKeyStates;
 int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
+Color background_color;
 
 namespace general
 {
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
+    //Set the default background color to white
+    background_color = Color(255,255,255,255);
     SDL_Log("SDL init OK!");
     if (!(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) & (IMG_INIT_JPG | IMG_INIT_PNG)))
         SDL_Log("Image subsystem inizialitation error.");
@@ -129,10 +132,23 @@ void set_window(int w, int h, string title, int fullscreen)
     width = w;
     height = h;
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, background_color.c.r,
+                           background_color.c.g,
+                           background_color.c.b,
+                           background_color.c.a);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
 
+}
+
+void set_background_color(const Color& bg)
+{
+    background_color = bg;
+    SDL_SetRenderDrawColor(renderer, background_color.c.r,
+                           background_color.c.g,
+                           background_color.c.b,
+                           background_color.c.a);
+   SDL_RenderClear(renderer);
 }
 
 int get_window_width()
