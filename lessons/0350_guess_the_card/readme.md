@@ -1,39 +1,34 @@
-# Mouse movements
+# Guess the card
 
-The VSGL2 library contains some functions to read the mouse state:
-- ```get_mouse_x()``` and ```get_mouse_y()``` to read the mouse coordinates
-- ```mouse_left_button_pressed()``` and ```mouse_right_button_pressed()``` to read the button status.
+This game shows an example on how to use the mouse input.
 
-In this example the first two functions are used to read the mouse coordinates and display them on the screen.
+The user has to guess where is the Queen among the three cards on the screen clicking on them.
 
-![Example](images/example.png)
+![Image drawing example](./images/screenshot1.png)
 
-Two other functions related to TrueType fonts are also used: ```text_width``` and ```text_height```. Their signature is:
-```c
-  text_width(
-    string font,
-    int dim,
-    string text
-  )
+If you click on the correct position you win, otherwise you lose...
+
+![Image drawing example](./images/screenshot2.png)
+
+This program is built without using array nor string, to stay as simple as possible.
+
+There are four functions to draw the card backs and the three different positions in which the Queen could be (as first, second or third position). At first the program chooses a position (1, 2 or 3) using the **rand()** function, then it enters in the main loop. Now it checks the left button pression of the mouse to check if it falls inside a card or not, using this simple function
+
+```cpp
+int choosen_card(int x, int y)
+{
+    if (x > start && x < start + card_width &&
+        y > top_padding && y < top_padding + card_height)
+        return 1;
+    if (x > start + dim && x < start + card_width + dim &&
+        y > top_padding && y < top_padding + card_height)
+        return 2;
+    if (x > start + dim*2&& x < start + card_width + dim*2 &&
+        y > top_padding && y < top_padding + card_height)
+        return 3;
+    return 0;
+}
 ```
-where **font** is the name of the font used, **dim** is the dimension, and **text** is the text to be displayed: these functions are useful to obtain the real dimension in pixels of the text to be displayed, because it depends on the font, dimension and text to be displayed. In this example, this information is used to show the mouse coordinates above the mouse position rather than below, using the following code:
-```c
-draw_text("audiowide.ttf",20,coordinates,
-          x  - text_width("audiowide.ttf", 20 ,coordinates),
-          y - text_height("audiowide.ttf", 20, coordinates),
-          Color(0,0,0,255));
-```
+The **x** and **y** parameters represent the mouse position and the **if** statements check if they are inside one of the three active areas (the cards), returning the number 1, 2 or 3 based on the mouse position. If the mouse is outside the cards, 0 returns.
 
-The *width* and the *height* of the text are subtracted from *x* and *y* to move the text above the mouse position.
-
-The string **coordinates** is created using **sprintf** function in this way:
-```c
-  sprintf(coordinates,"(%3d, %3d)",x ,y );
-```
-where **x** and **y** values are refreshed at each cycle of the main loop:
-```c
-x = get_mouse_x();
-y = get_mouse_y();
-```
-
-The *delay(2)* instruction is inserted only so that the CPU is not fully loaded without necessity.
+Finally, the program checks the user choice against the computer one, showing the "You won" or "You lost" string according to the choice. 
