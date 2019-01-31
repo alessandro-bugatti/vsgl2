@@ -27,6 +27,8 @@ using namespace AutoVersion;
 namespace vsgl2
 {
 
+const int NUMBER_OF_CHANNELS = 16;
+
 struct vsgl2_image
 {
     SDL_Texture *texture;
@@ -39,15 +41,19 @@ SDL_Renderer *renderer;
 bool isDone = false;
 map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
+map<string, Mix_Chunk*> sounds;
 const Uint8* currentKeyStates;
-int mouseX, mouseY;
+int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
+Color background_color;
 
 namespace general
 {
 void init()
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
+    //Set the default background color to white
+    background_color = Color(255,255,255,255);
     SDL_Log("SDL init OK!");
     if (!(IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG) & (IMG_INIT_JPG | IMG_INIT_PNG)))
         SDL_Log("Image subsystem inizialitation error.");
@@ -62,9 +68,17 @@ void init()
                 Mix_GetError() );
     else
         SDL_Log("SDL_mixer OK!");
+    Mix_AllocateChannels(NUMBER_OF_CHANNELS);
     SDL_Log("VSGL2 version: %s Build %ld",
             AutoVersion::FULLVERSION_STRING,
             AutoVersion::BUILDS_COUNT);
+    SDL_version compiled;
+    SDL_version linked;
+    SDL_VERSION(&compiled);
+    SDL_GetVersion(&linked);
+    SDL_Log("Built upon SDL2 version:\ncompiled %d.%d.%d\nlinked %d.%d.%d\n",
+             compiled.major, compiled.minor, compiled.patch,
+             linked.major, linked.minor, linked.patch);
 
 
 }
@@ -75,12 +89,20 @@ void close()
     //Free loaded image
     for (auto const& i: images)
         SDL_DestroyTexture( i.second.texture);
+    //Free loaded sounds
+    for (auto const& i: sounds)
+        Mix_FreeChunk(i.second);
+    //Free loaded fonts
+    for (auto const& i: fonts)
+        TTF_CloseFont(i.second);
+
     //Destroy window
     SDL_DestroyRenderer( renderer );
     SDL_DestroyWindow( window );
     //Free resources
     if (music != NULL)
         Mix_FreeMusic( music );
+
     //Quit various subsystems
     IMG_Quit();
     Mix_Quit();
@@ -110,10 +132,23 @@ void set_window(int w, int h, string title, int fullscreen)
     width = w;
     height = h;
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_SOFTWARE);
-    SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+    SDL_SetRenderDrawColor(renderer, background_color.c.r,
+                           background_color.c.g,
+                           background_color.c.b,
+                           background_color.c.a);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
 
+}
+
+void set_background_color(const Color& bg)
+{
+    background_color = bg;
+    SDL_SetRenderDrawColor(renderer, background_color.c.r,
+                           background_color.c.g,
+                           background_color.c.b,
+                           background_color.c.a);
+   SDL_RenderClear(renderer);
 }
 
 int get_window_width()
@@ -136,9 +171,18 @@ bool done()
     return isDone;
 }
 
+void undone()
+{
+    isDone = false;
+}
+
 void update()
 {
     SDL_Event e;
+    //Needed to avoid that the wheel value
+    //would stay to -1 or 1 after scrolling
+    mouseWheelX = 0;
+    mouseWheelY = 0;
     while ( SDL_PollEvent(&e) )
     {
         if (e.type == SDL_QUIT)
@@ -149,6 +193,11 @@ void update()
                 e.type == SDL_MOUSEBUTTONDOWN ||
                 e.type == SDL_MOUSEBUTTONUP )
             SDL_GetMouseState( &mouseX, &mouseY );
+        if( e.type == SDL_MOUSEWHEEL)
+            {
+                mouseWheelX = e.wheel.x;
+                mouseWheelY = e.wheel.y;
+            };
     }
     SDL_RenderPresent(renderer);
 }
@@ -227,7 +276,8 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     r.y = y;
     r.w = w;
     r.h = h;
-    SDL_SetTextureAlphaMod( images[image].texture, images[image].alpha);
+    SDL_SetTextureBlendMode( images[image].texture, SDL_BLENDMODE_BLEND );
+    SDL_SetTextureAlphaMod( images[image].texture, alpha);
     SDL_RenderCopy(renderer, images[image].texture,NULL,&r);
 }
 
@@ -264,6 +314,19 @@ namespace audio
         Mix_PlayMusic(music, -1);
         Mix_HaltMusic();
     }
+
+    void play_sound(string sound)
+    {
+        if (sounds.find(sound)==sounds.end())
+        {
+            Mix_Chunk* s = Mix_LoadWAV(sound.c_str());
+            if( s == NULL )
+                SDL_Log("Failed to load sound effect! SDL_mixer Error: %s\n", Mix_GetError());
+            else
+                sounds.insert(make_pair(sound,s));
+        }
+        Mix_PlayChannel( -1, sounds[sound], 0 );
+    }
 }//closing namespace audio
 
 namespace io
@@ -274,6 +337,63 @@ bool is_pressed(int key)
     return (bool)currentKeyStates[key];
 }
 
+string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length)
+{
+    std::string inputText;
+    SDL_Event e;
+    bool done = false;
+    SDL_Surface *screen = SDL_GetWindowSurface(window);
+    SDL_Rect r;
+    r.x= 0;
+    r.y = 0;
+    r.w = width;
+    r.h = height;
+    SDL_Texture *texture =
+    SDL_CreateTextureFromSurface(renderer, screen);
+    SDL_FreeSurface(screen);
+    while( !done )
+    {
+        delay(1); //to avoid to hung the CPU
+        bool renderText = false;
+
+        //Handle events on queue
+        while( SDL_PollEvent( &e ) != 0 )
+        {
+            //User requests quit
+            if( e.type == SDL_QUIT )
+            {
+                close();
+                exit(0);
+            }
+            else if( e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_RETURN )
+            {
+                done = true;
+            }
+            else if(e.type == SDL_KEYDOWN && e.key.keysym.sym == SDLK_BACKSPACE )
+            {
+                if (inputText.size()>0)
+                    inputText.pop_back();
+                renderText = true;
+            }
+            else if(  e.type == SDL_TEXTINPUT && (inputText.size() < max_length || max_length == 0) )
+            {
+                inputText += e.text.text;
+                renderText = true;
+            }
+        }
+        if( renderText )
+        {
+            SDL_RenderClear(renderer);
+            SDL_RenderCopy(renderer,texture,NULL,&r);
+            if (inputText.size() > 0)
+                draw_text(font,dim,inputText.c_str(),  x,  y,  c);
+            update();
+        }
+    }
+    SDL_DestroyTexture(texture);
+    return inputText;
+}
+
 int get_mouse_x()
 {
     return mouseX;
@@ -282,6 +402,16 @@ int get_mouse_x()
 int get_mouse_y()
 {
     return mouseY;
+}
+
+int get_mouse_wheel_x()
+{
+    return mouseWheelX;
+}
+
+int get_mouse_wheel_y()
+{
+    return mouseWheelY;
 }
 
 bool mouse_left_button_pressed()

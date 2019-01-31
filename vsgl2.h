@@ -93,6 +93,13 @@ void close();
 void set_window(int w, int h, string title, int fullscreen = 0);
 
 /**
+* \brief Use this function to change the background color
+* \param bg The new background color
+* \warning The alpha channel has to be configured, but it is not used
+*/
+void set_background_color(const Color& bg);
+
+/**
 * \brief Use this function to get the width of the current window
 * \return The width of the current window
 */
@@ -114,6 +121,14 @@ namespace video
 *    or has pressed ESC to close the program
 */
 bool done();
+
+/**
+* \brief Use this function to reset the isDone glabal variable to its initial state (false)
+* This can be useful when you want to use the done() function more then one time
+* inside a program, i.e. in a video game to restart a new game
+*/
+void undone();
+
 
 /**
 * \brief Use this function to update the screen after drawing on it
@@ -192,7 +207,7 @@ namespace audio
     *   \brief Use to play a music in a loop (WAVE, MOD, MIDI, OGG, MP3, FLAC,
     *   and any file that you use a command to play with). It can be typically
     *   used to play a background music.
-    *   \param file The music name, either absolute or relative
+    *   \param music The music name, either absolute or relative
     *   \warning The music will play in background until it will be paused
     *   or stopped
     */
@@ -207,6 +222,17 @@ namespace audio
     *   \warning If a music is not  currently playing, nothing happens.
     */
     void stop_music();
+    /**
+    *   \brief Use to play a sound (WAVE, MOD, MIDI, OGG, MP3, FLAC,
+    *   and any file that you use a command to play with). It can be typically
+    *   used to play a sound effect linked to an user action (pressing a button...).
+    *   \param sound The sound name, either absolute or relative
+    *   \warning The sound will play on its own channel, in this way it is possible to
+    *   play multiple sounds at the same time, or the same sound overlapped.
+    *   \attention Calling this function without leaving enough time
+    *   between two calls, makes the second call useless.
+    */
+    void play_sound(string sound);
 }//closing namespace audio
 
 
@@ -226,6 +252,21 @@ namespace io
     bool is_pressed(int key);
 
 /**
+*   \brief Use to read text from the user, the return key stops the input.
+*   \param font The filename of the font.
+*   \param dim Font dimension
+*   \param x The x coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param y The y coordinate of the upper left corner of the text
+*   inside the window coordinates
+*   \param c The color of the text
+*   \param max_length The maximum length of the text that can be written. The default value is 0, which means that there is no limit to the text length, otherwise the user can write only max_length characters. The value range is from 0 to 255, greater numbers than that will be truncated.
+*   \return The string typed from the user
+*   \warning This function is blocking, i.e. the program is stopped until the user presses the return key.
+*/
+    string read_text(string font, int dim, int x, int y, Color c, uint8_t max_length = 0);
+
+/**
 *   \brief Use to get the mouse x coordinate
 *   \return The value of mouse x coordinate
 */
@@ -237,6 +278,21 @@ namespace io
 *   \return The value of mouse y coordinate
 */
     int get_mouse_y();
+
+/**
+*   \brief Use to get the mouse wheel horizontal value,
+*   \return The amount scrolled horizontally,
+*   positive (1) to the right and negative (-1) to the left
+*/
+
+    int get_mouse_wheel_x();
+
+/**
+*   \brief Use to get the mouse wheel vertical value,
+*   \return The amount scrolled vertically,
+*    positive (1) away from the user and negative (-1) toward the user
+*/
+    int get_mouse_wheel_y();
 
 /**
 *   \brief Use to check if the mouse left button is pressed
@@ -338,6 +394,7 @@ using namespace vsgl2;
 using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::audio;
+using namespace vsgl2::io;
 using namespace vsgl2::ttf_fonts;
 using namespace vsgl2::utils;
 #endif //VSGL2_H_INCLUDED

@@ -1,5 +1,5 @@
 # Merry Christmas with squares
-To celebrate Christmas 2016, here is a simple application that shows an image surrounded by squares simulating snow flakes, as it can see on the YouTube video below.
+To celebrate Christmas 2016, here is a simple application that shows an image surrounded by squares simulating snow flakes, as can be seen in the YouTube video below.
 
 [![YouTube video](https://img.youtube.com/vi/Gyp2LQgBBoA/0.jpg)](https://www.youtube.com/watch?v=Gyp2LQgBBoA)
 
@@ -14,9 +14,9 @@ struct flake{
 };
 ```
 
-The integer *x* is the x coordinate of the flake, that is supposed to be constant during the entire life of the flake. The *y* coordinate is instead a double, as *v*, the velocity, in order to have a fine control over the speed of each flake.
+The integer *x* is the x coordinate of the flake, which should be constant during the entire life of the flake. The *y* coordinate is instead a double, as *v*, the velocity, in order to have a fine control over the speed of each flake.
 
-The C++ ```vector``` container is used to manage all the flakes during the program execution. All the flakes are inizialized with the following function:
+The C++ ```vector``` container is used to manage all the flakes during the program execution. All the flakes are initialized with the following function:
 
 ```c
 void init_flakes()
@@ -31,9 +31,9 @@ void init_flakes()
     }
 }
 ```
-The *x* and *y* coordinates are set using the ```rand``` function, where the *v* variable assume random value between 0.000001 and 0.000299 (this values has been tested on my computer to obtain a nice effect during execution, it depends on the computer "power"). The color is white with a random alpha value to obtain a transparency effect, different for each flake.
+The *x* and *y* coordinates are set using the ```rand``` function, where the *v* variable assumes a random value between 0.000001 and 0.000299 (this value has been tested on my computer to obtain a nice effect during execution, it depends on the computer "power"). The color is white with a random alpha value to obtain a transparency effect, which is different for each flake.
 
-The function ```update_flakes``` update each flake moving it along the y direction: when the flake goes behind the lower border of the screen, the *y* coordinate is set to 0 to place the flake at the upper border of the screen.
+The function ```update_flakes``` updates each flake moving it along the y direction: when the flake goes behind the lower border of the screen, the *y* coordinate is set to 0 to place the flake at the upper border of the screen.
 
 ```c
 void update_flakes(){

@@ -26,15 +26,15 @@ The first four parameters are the x,y coordinates of the line endpoints, where t
  ```c
 draw_line(  0,
             0,
-            get_window_width(),
-            get_window_height(),
+            get_window_width() - 1,
+            get_window_height() - 1,
             Color(255,0,0,255)
           );
  ```
 
 The x,y coordinates of the bottom-right corner of the screen are both positive numbers as in the picture below:
 
-![Screen coordinates](./images/screen.png)  
+![Screen coordinates](./images/screen.png)
 
 In this example `get_window_width()` and `get_window_height()` are used to obtain the coordinates of the bottom-right corner of the screen. These two functions return the screen dimensions as set in the `set_window()` function.
 
