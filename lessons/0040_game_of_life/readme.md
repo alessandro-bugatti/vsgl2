@@ -1,0 +1,2 @@
+# Game of Life
+The classical [Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) is a sort of mathematical "game" invented by John Conway in the seventies, that it will used to show how to use a matrix to record information about the image to be displayed.
