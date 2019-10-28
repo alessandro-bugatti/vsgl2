@@ -109,7 +109,7 @@ Main features:
 The documentation can be generated using Doxygen with the Doxyfile stored in the main project folder, otherwise there is a copy online [here on GitHub pages](https://alessandro-bugatti.github.io/vsgl2/)
 
 ## Lessons
-Very often programming library has a not so good documentation, sometimes because it is too difficult to follow, sometimes because it lacks in explaining fundamental parts.
+Very often programming libraries have a not so good documentation, sometimes because it is too difficult to follow, sometimes because it lacks in explaining fundamental parts.
 
 During the development of this library the idea is to add "lessons" to explain how to use the functionalities of this library through examples. [Go to the lessons](lessons/)
 
