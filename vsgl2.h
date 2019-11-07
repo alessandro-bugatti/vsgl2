@@ -75,7 +75,7 @@ const int FULLSCREEN = SDL_WINDOW_FULLSCREEN;
 /**
 * \brief Use this function to initiate the library, must be called first.
 */
-void init();
+void init(bool cartoonStyle = false);
 
 /**
 * \brief Close and free all the resources, must be called last.

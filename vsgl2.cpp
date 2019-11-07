@@ -46,10 +46,17 @@ const Uint8* currentKeyStates;
 int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
 Color background_color;
+//Variables for setting the drawing style of
+//the geometrical primitives (draw_line etc.)
+//in order to obtain persistence, e.g. each
+//figure remains on the screen without
+//having to redraw it at each cycle of the main loop
+bool cartoonStyle = false;
+SDL_Texture *canvas;
 
 namespace general
 {
-void init()
+void init(bool _cartoonStyle)
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
     //Set the default background color to white
@@ -79,8 +86,8 @@ void init()
     SDL_Log("Built upon SDL2 version:\ncompiled %d.%d.%d\nlinked %d.%d.%d\n",
              compiled.major, compiled.minor, compiled.patch,
              linked.major, linked.minor, linked.patch);
-
-
+    //Set the drawing style of primitives
+    cartoonStyle = _cartoonStyle;
 }
 
 void close()
