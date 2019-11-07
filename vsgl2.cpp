@@ -145,7 +145,12 @@ void set_window(int w, int h, string title, int fullscreen)
                            background_color.c.a);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
-
+    if (cartoonStyle){
+            canvas = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,
+                                       SDL_TEXTUREACCESS_TARGET, width, height);
+            SDL_SetTextureBlendMode( canvas, SDL_BLENDMODE_BLEND );
+            SDL_SetTextureAlphaMod( canvas, 127);
+        }
 }
 
 void set_background_color(const Color& bg)
@@ -174,7 +179,7 @@ namespace video
 {
 bool done()
 {
-    SDL_RenderClear(renderer);
+    //SDL_RenderClear(renderer);
     return isDone;
 }
 
@@ -215,7 +220,19 @@ void draw_point(int x, int y, const Color& c)
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
+    if (cartoonStyle){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderDrawPoint(renderer, x, y);
+    if (cartoonStyle){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
@@ -231,8 +248,20 @@ void draw_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
+    if (cartoonStyle){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderDrawRect(renderer, &rectangle);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    if (cartoonStyle){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
 }
 
 void draw_filled_rect(int x, int y, int w, int h, const Color& c)
@@ -247,7 +276,19 @@ void draw_filled_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
+    if (cartoonStyle){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderFillRect(renderer, &rectangle);
+    if (cartoonStyle){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
