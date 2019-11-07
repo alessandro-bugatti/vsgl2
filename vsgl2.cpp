@@ -51,12 +51,12 @@ Color background_color;
 //in order to obtain persistence, e.g. each
 //figure remains on the screen without
 //having to redraw it at each cycle of the main loop
-bool cartoonStyle = false;
+bool pixel_mode = false;
 SDL_Texture *canvas;
 
 namespace general
 {
-void init(bool _cartoonStyle)
+void init()
 {
     SDL_Init(SDL_INIT_VIDEO|SDL_INIT_AUDIO);
     //Set the default background color to white
@@ -86,8 +86,15 @@ void init(bool _cartoonStyle)
     SDL_Log("Built upon SDL2 version:\ncompiled %d.%d.%d\nlinked %d.%d.%d\n",
              compiled.major, compiled.minor, compiled.patch,
              linked.major, linked.minor, linked.patch);
-    //Set the drawing style of primitives
-    cartoonStyle = _cartoonStyle;
+}
+
+void set_pixel_mode()
+{
+    pixel_mode = true;
+}
+void unset_pixel_mode()
+{
+    pixel_mode = false;
 }
 
 void close()
@@ -145,7 +152,7 @@ void set_window(int w, int h, string title, int fullscreen)
                            background_color.c.a);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
-    if (cartoonStyle){
+    if (pixel_mode){
             canvas = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,
                                        SDL_TEXTUREACCESS_TARGET, width, height);
             SDL_SetTextureBlendMode( canvas, SDL_BLENDMODE_BLEND );
@@ -220,11 +227,11 @@ void draw_point(int x, int y, const Color& c)
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_SetRenderTarget(renderer, canvas);
     }
     SDL_RenderDrawPoint(renderer, x, y);
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_Rect r;
         r.x= 0;
         r.y = 0;
@@ -248,12 +255,12 @@ void draw_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_SetRenderTarget(renderer, canvas);
     }
     SDL_RenderDrawRect(renderer, &rectangle);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_Rect r;
         r.x= 0;
         r.y = 0;
@@ -276,11 +283,11 @@ void draw_filled_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_SetRenderTarget(renderer, canvas);
     }
     SDL_RenderFillRect(renderer, &rectangle);
-    if (cartoonStyle){
+    if (pixel_mode){
         SDL_Rect r;
         r.x= 0;
         r.y = 0;

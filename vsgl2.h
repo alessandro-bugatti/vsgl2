@@ -75,7 +75,25 @@ const int FULLSCREEN = SDL_WINDOW_FULLSCREEN;
 /**
 * \brief Use this function to initiate the library, must be called first.
 */
-void init(bool cartoonStyle = false);
+void init();
+
+/**
+* \brief Use this function to set the drawing mode
+* in order to keep all the shapes drawn on the
+* screen using the draw_* functions
+* between one cycle and the following
+* one during the main drawing loop
+*/
+void set_pixel_mode();
+
+/**
+* \brief Use this function to set the drawing mode
+* to normal, e.g. the draw_* functions don't keep
+* anything to the screen between one cycle
+* and the following
+* one during the main drawing loop
+*/
+void unset_pixel_mode();
 
 /**
 * \brief Close and free all the resources, must be called last.
