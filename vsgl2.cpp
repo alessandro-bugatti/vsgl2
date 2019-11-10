@@ -510,7 +510,7 @@ void draw_text(string font, int dim, string text, int x, int y, Color c)
 {
     string font_identifier = load_font(font, dim);
     if (font_identifier == "") return;
-    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier],
+    SDL_Surface* textSurface = TTF_RenderUTF8_Solid( fonts[font_identifier],
                                text.c_str(), c.c);
     if( textSurface == NULL )
     {
