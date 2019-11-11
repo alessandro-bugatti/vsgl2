@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
                          Color(0xf0,0xf9,0xff,255));
         draw_text("codepro.ttf",30,str.str(),0,H - FOOTER,Color(0,0,0,255));
         update();
-        delay(1);
+        delay(20);
     }
     //close the library and clean up everything
     close();
