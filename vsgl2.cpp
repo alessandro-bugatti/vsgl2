@@ -186,7 +186,7 @@ namespace video
 {
 bool done()
 {
-    //SDL_RenderClear(renderer);
+    if (!pixel_mode) SDL_RenderClear(renderer);
     return isDone;
 }
 
