@@ -403,6 +403,22 @@ unsigned int ms_time();
 */
 int take_screenshot(string filename);
 
+/**
+*   \brief Use this function to hide the mouse cursor
+*   \note The default state of the mouse cursor after
+*   init is visible.
+*/
+
+void hide_mouse_cursor();
+
+/**
+*   \brief Use this function to show the mouse cursor
+*   \note The default state of the mouse cursor after
+*   init is visible.
+*/
+
+void show_mouse_cursor();
+
 }//closing namaspace utility
 
 }
