@@ -616,6 +616,17 @@ int take_screenshot(string filename)
     return saved;
 }
 
+void hide_mouse_cursor()
+{
+    SDL_ShowCursor(SDL_DISABLE);
+}
+
+void show_mouse_cursor()
+{
+    SDL_ShowCursor(SDL_ENABLE);
+}
+
+
 }//closing namespace utils
 
 }
