@@ -58,3 +58,8 @@ myApps/
 # Unnecessary files related to CodeBlocks projects
 *.depend
 *.layout
+
+#Personal files to make experiments
+/temp/
+/main.cpp
+/vsgl2.cbp

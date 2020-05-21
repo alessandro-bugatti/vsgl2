@@ -1,0 +1,6 @@
+07 February 2020
+   released version 0.1.131 of vsgl2
+
+     Change log:
+        -Added: Add hide/show functionality for the mouse cursor
+

@@ -46,6 +46,13 @@ const Uint8* currentKeyStates;
 int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
 Color background_color;
+//Variables for setting the drawing style of
+//the geometrical primitives (draw_line etc.)
+//in order to obtain persistence, e.g. each
+//figure remains on the screen without
+//having to redraw it at each cycle of the main loop
+bool pixel_mode = false;
+SDL_Texture *canvas;
 
 namespace general
 {
@@ -79,8 +86,15 @@ void init()
     SDL_Log("Built upon SDL2 version:\ncompiled %d.%d.%d\nlinked %d.%d.%d\n",
              compiled.major, compiled.minor, compiled.patch,
              linked.major, linked.minor, linked.patch);
+}
 
-
+void set_pixel_mode()
+{
+    pixel_mode = true;
+}
+void unset_pixel_mode()
+{
+    pixel_mode = false;
 }
 
 void close()
@@ -138,7 +152,12 @@ void set_window(int w, int h, string title, int fullscreen)
                            background_color.c.a);
     SDL_RenderClear(renderer);
     SDL_SetRenderDrawBlendMode(renderer,SDL_BLENDMODE_BLEND);
-
+    if (pixel_mode){
+            canvas = SDL_CreateTexture(renderer,SDL_PIXELFORMAT_ARGB8888,
+                                       SDL_TEXTUREACCESS_TARGET, width, height);
+            SDL_SetTextureBlendMode( canvas, SDL_BLENDMODE_BLEND );
+            SDL_SetTextureAlphaMod( canvas, 127);
+        }
 }
 
 void set_background_color(const Color& bg)
@@ -167,7 +186,7 @@ namespace video
 {
 bool done()
 {
-    SDL_RenderClear(renderer);
+    if (!pixel_mode) SDL_RenderClear(renderer);
     return isDone;
 }
 
@@ -208,7 +227,19 @@ void draw_point(int x, int y, const Color& c)
     Uint8 r, g, b, a;
     SDL_GetRenderDrawColor(renderer, &r, &g, &b, &a);
     SDL_SetRenderDrawColor(renderer, c.c.r, c.c.g, c.c.b, c.c.a);
+    if (pixel_mode){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderDrawPoint(renderer, x, y);
+    if (pixel_mode){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
@@ -224,8 +255,20 @@ void draw_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
+    if (pixel_mode){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderDrawRect(renderer, &rectangle);
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
+    if (pixel_mode){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
 }
 
 void draw_filled_rect(int x, int y, int w, int h, const Color& c)
@@ -240,7 +283,19 @@ void draw_filled_rect(int x, int y, int w, int h, const Color& c)
     rectangle.y = y;
     rectangle.w = w;
     rectangle.h = h;
+    if (pixel_mode){
+        SDL_SetRenderTarget(renderer, canvas);
+    }
     SDL_RenderFillRect(renderer, &rectangle);
+    if (pixel_mode){
+        SDL_Rect r;
+        r.x= 0;
+        r.y = 0;
+        r.w = width;
+        r.h = height;
+        SDL_SetRenderTarget(renderer, NULL);
+        SDL_RenderCopy(renderer, canvas, NULL, &r);
+    }
     SDL_SetRenderDrawColor(renderer, r, g, b, a);
 }
 
@@ -455,7 +510,7 @@ void draw_text(string font, int dim, string text, int x, int y, Color c)
 {
     string font_identifier = load_font(font, dim);
     if (font_identifier == "") return;
-    SDL_Surface* textSurface = TTF_RenderText_Solid( fonts[font_identifier],
+    SDL_Surface* textSurface = TTF_RenderUTF8_Solid( fonts[font_identifier],
                                text.c_str(), c.c);
     if( textSurface == NULL )
     {
@@ -560,6 +615,17 @@ int take_screenshot(string filename)
     SDL_RWclose(file);
     return saved;
 }
+
+void hide_mouse_cursor()
+{
+    SDL_ShowCursor(SDL_DISABLE);
+}
+
+void show_mouse_cursor()
+{
+    SDL_ShowCursor(SDL_ENABLE);
+}
+
 
 }//closing namespace utils
 

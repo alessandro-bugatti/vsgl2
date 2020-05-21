@@ -78,6 +78,24 @@ const int FULLSCREEN = SDL_WINDOW_FULLSCREEN;
 void init();
 
 /**
+* \brief Use this function to set the drawing mode
+* in order to keep all the shapes drawn on the
+* screen using the draw_* functions
+* between one cycle and the following
+* one during the main drawing loop
+*/
+void set_pixel_mode();
+
+/**
+* \brief Use this function to set the drawing mode
+* to normal, e.g. the draw_* functions don't keep
+* anything to the screen between one cycle
+* and the following
+* one during the main drawing loop
+*/
+void unset_pixel_mode();
+
+/**
 * \brief Close and free all the resources, must be called last.
 */
 void close();
@@ -384,6 +402,22 @@ unsigned int ms_time();
 *   \note The image is saved in BMP format
 */
 int take_screenshot(string filename);
+
+/**
+*   \brief Use this function to hide the mouse cursor
+*   \note The default state of the mouse cursor after
+*   init is visible.
+*/
+
+void hide_mouse_cursor();
+
+/**
+*   \brief Use this function to show the mouse cursor
+*   \note The default state of the mouse cursor after
+*   init is visible.
+*/
+
+void show_mouse_cursor();
 
 }//closing namaspace utility
 
