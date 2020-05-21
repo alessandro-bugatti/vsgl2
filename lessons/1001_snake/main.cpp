@@ -13,122 +13,101 @@ using namespace vsgl2::io;
 *   Arrow keys to move the snake
 */
 
-const int SQUARE = 10;
-const int MAX_LENGTH = 30;
-const int DIM_X = 50;
-const int DIM_Y = 50;
-const int EMPTY = 0;
-const int SNAKE = 1;
-const int BONUS = 2;
-const int UPDATE = 100;
-const Color COLOR_BG = Color(0,0,0,255);
-const Color COLOR_SNAKE = Color(255,0,0,255);
-const Color COLOR_BONUS = Color(0,0,0,255);
-enum direction{UP, DOWN, LEFT, RIGHT} dir;
-struct unit{
-    int x,y;
+/**
+    Each single element on the field, it could be
+    a segment of the snake's body or an object
+*/
+
+const int DIM = 20;
+const int WIDTH = 500;
+const int HEIGHT = 500;
+const int MAX_X = WIDTH/DIM;
+const int MAX_Y = HEIGHT/DIM;
+const int MAX_SNAKE_LENGTH = 100;
+enum Direction{LEFT, RIGHT, UP, DOWN};
+
+struct Element{
+    int x; //logical coordinates, not pixel
+    int y;
+    int dim;
+    string image;
 };
 
-unit snake[MAX_LENGTH];
-
-Color field[DIM_X][DIM_Y];
-
-void init_snake(unit snake[], int n)
+struct Snake
 {
-    for (int i=0; i < n; i++)
-    {
-        snake[i].x = DIM_X/2 - i;
-        snake[i].y = DIM_Y/2;
+    Element body[MAX_SNAKE_LENGTH];
+    int length;
+    Direction dir;
+};
+
+void init_snake(Snake &snake, int x, int y, string image)
+{
+    for (int i = 0; i < 6; i++){
+        snake.body[i].x = x;
+        snake.body[i].y = y + i;
+        snake.body[i].dim = DIM;
+        snake.body[i].image = image;
     }
+    snake.dir = UP;
+    snake.length = 6;
 }
 
-int move_snake(unit snake[], int n, int DIR)
+void update_snake(Snake &snake)
 {
-    unit head;
-    switch(DIR){
-        case LEFT:
-            head.x = snake[0].x - 1;
-            head.y = snake[0].y;
-            break;
-        case RIGHT:
-            head.x = snake[0].x + 1;
-            head.y = snake[0].y;
-            break;
-        case UP:
-            head.x = snake[0].x;
-            head.y = snake[0].y - 1;
-            break;
-        case DOWN:
-            head.x = snake[0].x;
-            head.y = snake[0].y + 1;
-            break;
-    }
-    for (int i = n - 1; i > 0; i--)
-    {
-        snake[i].x = snake[i-1].x;
-        snake[i].y = snake[i-1].y;
-    }
-    snake[0] = head;
+    for (int i = snake.length - 1; i > 0; i--)
+        snake.body[i] = snake.body[i-1];
+    if (snake.dir == UP)
+        snake.body[0].y--;
+    if (snake.dir == DOWN)
+        snake.body[0].y++;
+    if (snake.dir == LEFT)
+        snake.body[0].x--;
+    if (snake.dir == RIGHT)
+        snake.body[0].x++;
 }
 
-void add_unit(unit snake[], int n)
+void draw_element(Element element)
 {
-    snake[n].x = snake[n-1].x;
-    snake[n].y = snake[n-1].y;
+    draw_image(element.image, element.x*DIM,
+               element.y*DIM, element.dim, element.dim, 255);
 }
 
-void draw_field(unit snake[], int n)
+void draw_snake(Snake snake)
 {
-    for (int i = 0; i < DIM_X ; i++)
-        for (int j = 0; j < DIM_Y; j++)
-            field[i][j] = COLOR_BG;
-    for (int i = 0; i < n; i++)
-        field[snake[i].x][snake[i].y] = COLOR_SNAKE;
-
-    for (int i = 0; i < DIM_X ; i++)
-        for (int j = 0; j < DIM_Y; j++)
-            draw_filled_rect(i*SQUARE, j*SQUARE, SQUARE, SQUARE, field[i][j]);
+    for (int i = 0; i < snake.length; i++)
+        draw_element(snake.body[i]);
 }
 
 int main(int argc, char* argv[]) {
 
-    int length = 5;
-    direction dir = LEFT;
+    int field[MAX_X][MAX_Y];
+    Snake snake;
+    init_snake(snake, 10, 10, "assets/images/snake.png");
+
     int update_time = ms_time();
     //init the library
     init();
     //create the window and show it
-    set_window(512,512,"Snake");
-
+    set_window(WIDTH, HEIGHT,"Snake");
+    set_background_color(Color(0,0,0,255));
+    int time = ms_time();
     //main loop
-    int w = get_window_width();
-    int h = get_window_height();
-    init_snake(snake, length);
-    int temp = 2;
     while(!done())
     {
-        //Input management
-        if (is_pressed(VSGL_UP) && dir != DOWN)
-            dir = UP;
-        if (is_pressed(VSGL_DOWN) && dir != UP)
-            dir = DOWN;
-        if (is_pressed(VSGL_LEFT) && dir != RIGHT)
-            dir = LEFT;
-        if (is_pressed(VSGL_RIGHT) && dir != LEFT)
-            dir = RIGHT;
-        if (ms_time() - update_time > UPDATE)
+        draw_snake(snake);
+        if (ms_time() - time > 100)
         {
-            if (temp%50 == 1)
-            {
-                add_unit(snake,length);
-                length++;
-            }
-            temp++;
-            move_snake(snake, length, dir);
-            update_time = ms_time();
+            if (is_pressed(VSGL_UP))
+                snake.dir = UP;
+            if (is_pressed(VSGL_DOWN))
+                snake.dir = DOWN;
+            if (is_pressed(VSGL_LEFT))
+                snake.dir = LEFT;
+            if (is_pressed(VSGL_RIGHT))
+                snake.dir = RIGHT;
+            update_snake(snake);
+            time = ms_time();
         }
-        //update screen
-        draw_field(snake, length);
         update();
     }
 
