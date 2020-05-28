@@ -31,6 +31,8 @@ const int UPDATE_TIME = 100;
 
 enum Direction{LEFT, RIGHT, UP, DOWN};
 
+enum Object{NOTHING, SNAKE, WALL, APPLE, LEMON};
+
 struct Element{
     int x; //logical coordinates, not pixel
     int y;
@@ -43,22 +45,51 @@ struct Snake
     Element body[MAX_SNAKE_LENGTH];
     int length;
     Direction dir;
+    int bonus;
 };
 
-void init_snake(Snake &snake, int x, int y, string image)
+struct Field{
+    Object cells[MAX_X][MAX_Y];
+};
+
+void init_snake(Snake &snake, int x, int y, string image, int len, Field &f)
 {
-    for (int i = 0; i < 6; i++){
+    for (int i = 0; i < len; i++){
         snake.body[i].x = x;
         snake.body[i].y = y + i;
         snake.body[i].dim = DIM;
         snake.body[i].image = image;
+        f.cells[x][y+1] = SNAKE;
     }
     snake.dir = UP;
-    snake.length = 6;
+    snake.length = len;
+    snake.bonus = 0;
 }
 
-void update_snake(Snake &snake)
+void update_snake(Snake &snake, Field &f)
 {
+    int xt, yt;
+    xt = snake.body[snake.length - 1].x;
+    yt = snake.body[snake.length - 1].y;
+    if (snake.bonus > 0)
+    {
+        snake.body[snake.length] = snake.body[snake.length - 1];
+        snake.length++;
+        snake.bonus--;
+    }
+    else if(snake.bonus < 0)
+    {
+        xt = snake.body[snake.length-1].x;
+        yt = snake.body[snake.length-1].y;
+        f.cells[xt][yt] = NOTHING;
+        xt = snake.body[snake.length-2].x;
+        yt = snake.body[snake.length-2].y;
+        f.cells[xt][yt] = NOTHING;
+        snake.length--;
+        snake.bonus++;
+    }
+    else
+        f.cells[xt][yt] = NOTHING;
     for (int i = snake.length - 1; i > 0; i--)
         snake.body[i] = snake.body[i-1];
     if (snake.dir == UP)
@@ -69,6 +100,20 @@ void update_snake(Snake &snake)
         snake.body[0].x--;
     if (snake.dir == RIGHT)
         snake.body[0].x++;
+    int x, y;
+    x = snake.body[0].x;
+    y = snake.body[0].y;
+    f.cells[x][y] = SNAKE;
+
+}
+
+void init_element(Element &e, int x, int y, string image, Object o, Field &f)
+{
+    e.dim = DIM;
+    e.x = x;
+    e.y = y;
+    e.image = image;
+    f.cells[x][y] = o;
 }
 
 void draw_element(Element element)
@@ -83,12 +128,43 @@ void draw_snake(Snake snake)
         draw_element(snake.body[i]);
 }
 
+
+Object check_collisions(Field &f, Snake &snake)
+{
+    int x, y;
+    x = snake.body[0].x;
+    y = snake.body[0].y;
+    if (snake.dir == UP)
+        y = snake.body[0].y - 1;
+    if (snake.dir == DOWN)
+        y = snake.body[0].y + 1;
+    if (snake.dir == LEFT)
+        x = snake.body[0].x - 1;
+    if (snake.dir == RIGHT)
+        x = snake.body[0].x + 1;
+    return f.cells[x][y];
+}
+
+//Only for debug purposes
+void draw_field(Field &f)
+{
+    for (int i = 0; i < MAX_X; i++)
+        for (int j = 0; j < MAX_Y; j++)
+            if (f.cells[i][j] == SNAKE)
+        draw_element({i,j,DIM,"assets/images/snake.png"});
+}
+
 int main(int argc, char* argv[]) {
 
-    int field[MAX_X][MAX_Y];
+    Field field;
+    for (int i = 0; i < MAX_X; i++)
+        for (int j = 0; j < MAX_Y; j++)
+            field.cells[i][j] = NOTHING;
     Snake snake;
-    init_snake(snake, 10, 10, "assets/images/snake.png");
-
+    Element apple, lemon;
+    init_snake(snake, 10, 10, "assets/images/snake.png", 15, field);
+    init_element(apple, 2, 7, "assets/images/apple.png", APPLE, field );
+    init_element(lemon, 12, 23, "assets/images/orange.png", LEMON, field );
     int update_time = ms_time();
     //init the library
     init();
@@ -105,6 +181,9 @@ int main(int argc, char* argv[]) {
     {
         fps++;
         draw_snake(snake);
+        //draw_field(field);
+        draw_element(apple);
+        draw_element(lemon);
         draw_text("assets/fonts/vt323.ttf",20,out.str(),0,HEIGHT,Color(255,255,255,255));
         if (ms_time() - time > UPDATE_TIME)
         {
@@ -116,7 +195,25 @@ int main(int argc, char* argv[]) {
                 snake.dir = LEFT;
             if (is_pressed(VSGL_RIGHT))
                 snake.dir = RIGHT;
-            update_snake(snake);
+            Object o = check_collisions(field, snake);
+            if (o == SNAKE || o == WALL)
+                break;
+            if (o == APPLE)
+            {
+                snake.bonus = 10;
+                apple.x = rand()%MAX_X;
+                apple.y = rand()%MAX_Y;
+                field.cells[apple.x][apple.y] = APPLE;
+            }
+
+            if (o == LEMON)
+            {
+                snake.bonus = -10;
+                lemon.x = rand()%MAX_X;
+                lemon.y = rand()%MAX_Y;
+                field.cells[lemon.x][lemon.y] = LEMON;
+            }
+            update_snake(snake, field);
 
             time = ms_time();
 
