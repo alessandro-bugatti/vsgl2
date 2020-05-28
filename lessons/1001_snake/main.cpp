@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 #include <ctime>
 #include "../../vsgl2.h"
 
@@ -8,6 +9,7 @@ using namespace vsgl2::general;
 using namespace vsgl2::video;
 using namespace vsgl2::utils;
 using namespace vsgl2::io;
+using namespace vsgl2::ttf_fonts;
 
 /** The retro game Snake
 *   Arrow keys to move the snake
@@ -18,12 +20,15 @@ using namespace vsgl2::io;
     a segment of the snake's body or an object
 */
 
-const int DIM = 20;
+const int DIM = 10;
 const int WIDTH = 500;
-const int HEIGHT = 500;
+const int HEIGHT = 480;
+const int FOOTER = 32;
 const int MAX_X = WIDTH/DIM;
 const int MAX_Y = HEIGHT/DIM;
 const int MAX_SNAKE_LENGTH = 100;
+const int UPDATE_TIME = 100;
+
 enum Direction{LEFT, RIGHT, UP, DOWN};
 
 struct Element{
@@ -88,14 +93,20 @@ int main(int argc, char* argv[]) {
     //init the library
     init();
     //create the window and show it
-    set_window(WIDTH, HEIGHT,"Snake");
+    set_window(WIDTH, HEIGHT + FOOTER,"Snake");
     set_background_color(Color(0,0,0,255));
     int time = ms_time();
+    int fps_time = ms_time();
+    int fps = 0;
+    ostringstream out;
+    out << "FPS: " << fps;
     //main loop
     while(!done())
     {
+        fps++;
         draw_snake(snake);
-        if (ms_time() - time > 100)
+        draw_text("assets/fonts/vt323.ttf",20,out.str(),0,HEIGHT,Color(255,255,255,255));
+        if (ms_time() - time > UPDATE_TIME)
         {
             if (is_pressed(VSGL_UP))
                 snake.dir = UP;
@@ -106,7 +117,17 @@ int main(int argc, char* argv[]) {
             if (is_pressed(VSGL_RIGHT))
                 snake.dir = RIGHT;
             update_snake(snake);
+
             time = ms_time();
+
+        }
+        //Update the FPS every second
+        if (ms_time() - fps_time > 1000)
+        {
+            out.str("");
+            out << "FPS: " << fps;
+            fps = 0;
+            fps_time = ms_time();
         }
         update();
     }
