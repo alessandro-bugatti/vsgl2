@@ -329,6 +329,14 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
     SDL_Rect r;
     r.x= x;
     r.y = y;
+    if (w == -1 || h == -1)
+    {
+        Uint32 format;
+        int access;
+        SDL_QueryTexture(images[image].texture,
+                     &format, &access, &w, &h);
+
+    }
     r.w = w;
     r.h = h;
     SDL_SetTextureBlendMode( images[image].texture, SDL_BLENDMODE_BLEND );

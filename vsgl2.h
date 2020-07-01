@@ -205,16 +205,18 @@ void draw_filled_rect(int x, int y, int w, int h, const Color &c);
 *   \param y The y coordinate of the upper left corner of the image
 *   inside the window coordinates
 *   \param w The width of the image as it will appear inside the window,
-*   not its original value
+*   not its original value. This parameter is optional, if not present
+*   the original image width will be used.
 *   \param h The height of the image as it will appear inside the window,
-*   not its original value
+*   not its original value. This parameter is optional, if not present
+*   the original image height will be used.
 *   \param [alpha] The transparency value for the image: with 255 (the default), the image
 *   will look as the original, with 0 the image will become invisible
 *   \warning The width and the height can be set as wanted, but it is better
 *   to have the dimension of the image in the file the same as in w and h
-*   to reduce CPU load and improve performance
+*   to reduce CPU load and improve performance.
 */
-void draw_image(string image, int x, int y, int w, int h, uint8_t alpha = 255);
+void draw_image(string image, int x, int y, int w = -1, int h = -1, uint8_t alpha = 255);
 
 }//closing video namespace
 
