@@ -162,6 +162,7 @@ void load_walls(string filename, Field &f)
     if (!in)
     {
         cout << "Error in walls' file opening" << endl;
+        return;
     }
     for (int i = 0; i < MAX_X; i++)
         for (int j = 0; j < MAX_Y; j++)
@@ -171,6 +172,7 @@ void load_walls(string filename, Field &f)
             if (temp)
                 f.cells[j][i] = WALL;
         }
+    in.close();
 }
 
 void draw_walls(Field &f)
