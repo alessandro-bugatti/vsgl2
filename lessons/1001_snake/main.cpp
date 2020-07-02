@@ -35,6 +35,8 @@ enum Direction{LEFT, RIGHT, UP, DOWN};
 
 enum Object{NOTHING, SNAKE, WALL, APPLE, LEMON};
 
+enum Status{SPLASH, GAME, END_GAME};
+
 struct Element{
     int x; //logical coordinates, not pixel
     int y;
@@ -191,6 +193,7 @@ int main(int argc, char* argv[]) {
             field.cells[i][j] = NOTHING;
     Snake snake;
     Element apple, lemon;
+    Status status = SPLASH;
     int score = 0;
     init_snake(snake, 10, 10, "assets/images/snake.png", 15, field);
     init_element(apple, rand()%MAX_X, rand()%MAX_Y, "assets/images/apple.png", APPLE, field );
@@ -200,7 +203,7 @@ int main(int argc, char* argv[]) {
     init();
     //create the window and show it
     set_window(WIDTH, HEIGHT + FOOTER,"Snake");
-    set_background_color(Color(0,0,0,255));
+    set_background_color(Color(200,200,200,255));
     int time = ms_time();
     int fps_time = ms_time();
     int fps = 0;
@@ -211,62 +214,80 @@ int main(int argc, char* argv[]) {
     //main loop
     while(!done())
     {
-        fps++;
-        draw_snake(snake);
-        //draw_field(field);
-        draw_element(apple);
-        draw_element(lemon);
-        draw_walls(field);
-        draw_text("assets/fonts/vt323.ttf",20,out.str(),0,HEIGHT,Color(255,255,255,255));
-        if (ms_time() - time > UPDATE_TIME)
+        switch(status)
         {
-            if (is_pressed(VSGL_UP))
-                snake.dir = UP;
-            if (is_pressed(VSGL_DOWN))
-                snake.dir = DOWN;
-            if (is_pressed(VSGL_LEFT))
-                snake.dir = LEFT;
-            if (is_pressed(VSGL_RIGHT))
-                snake.dir = RIGHT;
-            Object o = check_collisions(field, snake);
-            if (o == SNAKE || o == WALL)
+            case SPLASH:
+                draw_image("assets/images/snaik.png",0,0);
+                if (is_pressed(VSGL_SPACE))
+                {
+                    set_background_color(Color(0,0,0,255));
+                    status = GAME;
+                }
                 break;
-            if (o == APPLE)
-            {
-                play_sound("assets/sounds/apple.mp3");
-                score += 100;
-                out.str("");
-                out << "FPS: " << fps << " Score: " << score;
-                snake.bonus = 10;
-                apple.x = rand()%MAX_X;
-                apple.y = rand()%MAX_Y;
-                field.cells[apple.x][apple.y] = APPLE;
-            }
+            case GAME:
+                fps++;
+                draw_snake(snake);
+                //draw_field(field);
+                draw_element(apple);
+                draw_element(lemon);
+                draw_walls(field);
+                draw_text("assets/fonts/vt323.ttf",20,out.str(),0,HEIGHT,Color(255,255,255,255));
+                if (ms_time() - time > UPDATE_TIME)
+                {
+                    if (is_pressed(VSGL_UP))
+                        snake.dir = UP;
+                    if (is_pressed(VSGL_DOWN))
+                        snake.dir = DOWN;
+                    if (is_pressed(VSGL_LEFT))
+                        snake.dir = LEFT;
+                    if (is_pressed(VSGL_RIGHT))
+                        snake.dir = RIGHT;
+                    Object o = check_collisions(field, snake);
+                    if (o == SNAKE || o == WALL)
+                        status = END_GAME;
+                    if (o == APPLE)
+                    {
+                        play_sound("assets/sounds/apple.mp3");
+                        score += 100;
+                        out.str("");
+                        out << "FPS: " << fps << " Score: " << score;
+                        snake.bonus = 10;
+                        apple.x = rand()%MAX_X;
+                        apple.y = rand()%MAX_Y;
+                        field.cells[apple.x][apple.y] = APPLE;
+                    }
 
-            if (o == LEMON)
-            {
-                play_sound("assets/sounds/orange.mp3");
-                score += 50;
-                out.str("");
-                out << "FPS: " << fps << " Score: " << score;
-                snake.bonus = -10;
-                lemon.x = rand()%MAX_X;
-                lemon.y = rand()%MAX_Y;
-                field.cells[lemon.x][lemon.y] = LEMON;
-            }
-            update_snake(snake, field);
+                    if (o == LEMON)
+                    {
+                        play_sound("assets/sounds/orange.mp3");
+                        score += 50;
+                        out.str("");
+                        out << "FPS: " << fps << " Score: " << score;
+                        snake.bonus = -10;
+                        lemon.x = rand()%MAX_X;
+                        lemon.y = rand()%MAX_Y;
+                        field.cells[lemon.x][lemon.y] = LEMON;
+                    }
+                    update_snake(snake, field);
 
-            time = ms_time();
+                    time = ms_time();
+
+                }
+                //Update the FPS every second
+                if (ms_time() - fps_time > 1000)
+                {
+                    out.str("");
+                    out << "FPS: " << fps << " Score: " << score;
+                    fps = 0;
+                    fps_time = ms_time();
+                }
+            break;
+                case END_GAME:
+                    close();
+                    return 0;
 
         }
-        //Update the FPS every second
-        if (ms_time() - fps_time > 1000)
-        {
-            out.str("");
-            out << "FPS: " << fps << " Score: " << score;
-            fps = 0;
-            fps_time = ms_time();
-        }
+
         update();
     }
 
