@@ -10,7 +10,10 @@ This section is about how to install SDL and VSGL2 on your platform of choice an
 ## Installing SDL2 library
 The following subsections are referred to Windows, Linux and MacOS installation process, using CodeBlocks as IDE, it is absolutely possible to use other IDEs.
 
-### Windows
+**Update 2020-12-02**: the MingW compiler now included in CodeBlocks 20.03 is a 64-bit compiler, instead of the 32-bit version previously included in CodeBlocks. The next instructions are for both versions.
+
+
+### Windows with Codeblocks versione < 20.03
 First of all it is necessary to install [CodeBlocks](http://www.codeblocks.org), which include the Mingw32 suite of tools (compiler, linker, etc.) to create C/C++ programs. Then there are three possibilities to install SDL2 (you can go [here](http://www.imparando.net/sito/introduzione_alla_programmazione_in_C/strumenti_di_sviluppo/installare%20la%20libreria%20SDL2.htm) to read the same instructions in Italian):
 
  - **First one** (the easiest): I have already created a big compressed file with all the stuff needed inside (compiler, Codeblocks IDE, libraries). [Download the file](http://www.imparando.net/software/codeblocks.zip), then uncompressed it on your PC. Download also [DLL files](http://www.imparando.net/software/dll.zip) and copy them inside Windows/SysWOW64 subfolder, that's it.
@@ -28,6 +31,9 @@ First of all it is necessary to install [CodeBlocks](http://www.codeblocks.org),
   - **SDL_ttf**: TrueType font rendering library, download from [this page](https://www.libsdl.org/projects/SDL_ttf/), Development libraries, file tar.gz for Mingw.
 
  After that, the procedure is the same as in the second possibility, it has to be replicated for each package, which includes i686-w64-mingw32 folder with **include**, **lib** and **bin** folders inside.  
+ 
+### Windows with Codeblocks versione >= 20.03
+These instructions are similar to the previous ones, the only difference is the SDL2 libraries version. It is necessary to download the 64-bit versione that can be found in the [Release sectionhttps://github.com/alessandro-bugatti/vsgl2/releases/tag/v0.1)](https://github.com/alessandro-bugatti/vsgl2/releases/tag/v0.1) of this project.
 
 ### Linux
 
