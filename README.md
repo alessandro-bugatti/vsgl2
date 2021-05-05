@@ -11,11 +11,11 @@ This section is about how to install SDL and VSGL2 on your platform of choice an
 The following subsections are referred to Windows, Linux and MacOS installation process, using CodeBlocks as IDE, it is absolutely possible to use other IDEs.
 
 ### Windows
-First of all it is necessary to install [CodeBlocks](http://www.codeblocks.org), which include the Mingw32 suite of tools (compiler, linker, etc.) to create C/C++ programs. Then there are three possibilities to install SDL2 (you can go [here](http://www.imparando.net/sito/introduzione_alla_programmazione_in_C/strumenti_di_sviluppo/installare%20la%20libreria%20SDL2.htm) to read the same instructions in Italian):
+First of all it is necessary to install [CodeBlocks](http://www.codeblocks.org), which include the Mingw32 suite of tools (compiler, linker, etc.) to create C/C++ programs. Then there are three possibilities to install SDL2:
 
- - **First one** (the easiest): I have already created a big compressed file with all the stuff needed inside (compiler, Codeblocks IDE, libraries). [Download the file](http://www.imparando.net/software/codeblocks.zip), then uncompressed it on your PC. Download also [DLL files](http://www.imparando.net/software/dll.zip) and copy them inside Windows/SysWOW64 subfolder, that's it.
+ - No longer maintained. ~~**First one** (the easiest): I have already created a big compressed file with all the stuff needed inside (compiler, Codeblocks IDE, libraries). [Download the file](http://www.imparando.net/software/codeblocks.zip), then uncompressed it on your PC. Download also [DLL files](http://www.imparando.net/software/dll.zip) and copy them inside Windows/SysWOW64 subfolder, that's it.~~
 
- - **Second one** (easy): after Codeblocks installation, download [this package](http://www.imparando.net/software/SDL_package.zip) created by me: there are three folders inside
+ - **Second one** (easy): after Codeblocks installation, download the [latest release](https://github.com/alessandro-bugatti/vsgl2/releases/latest). There are three folders inside 
    - **include**: it contains header files (.h), inside *SDL2* subfolder. This subfolder has to be copied inside *include* folder within Codeblocks/Mingw directory
    - **lib**: it contains the library object files, they have to be copied inside Codeblocks/Mingw/lib directory
    - **bin**: it contains the DLLs needed to execute the VSGL2 programs on the host PC. They could be copied in the same folder of each executable and it is necessary if you plan to distribute your programs, but in the development phase it is better to copy them inside Windows/SysWOW64 subfolder: in this way they will be visible system-wide. There are also other DLLs other than SDL2 DLLs: they are necessary to execute basic tasks, e.g. to load JPEG images.
@@ -119,3 +119,4 @@ Any help will be appreciated, some examples:
 - Adding lessons to clarify some aspects or only to give inspiration
 - I'm not a native speaker (I think it is clear), so corrections will be welcomed.
 - Anything useful.
+
