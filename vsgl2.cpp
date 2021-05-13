@@ -18,6 +18,8 @@
 
 #include <iostream>
 #include <map>
+#include <list>
+#include <fstream>
 #include "version.h"
 #include "vsgl2.h"
 
@@ -29,12 +31,6 @@ namespace vsgl2
 
 const int NUMBER_OF_CHANNELS = 16;
 
-struct vsgl2_image
-{
-    SDL_Texture *texture;
-    uint8_t alpha;
-};
-
 SDL_Window *window;
 int width,height; //window size
 SDL_Renderer *renderer;
@@ -42,6 +38,7 @@ bool isDone = false;
 map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
 map<string, Mix_Chunk*> sounds;
+list<vsgl2_animation> sprites;
 const Uint8* currentKeyStates;
 int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
@@ -218,6 +215,12 @@ void update()
                 mouseWheelY = e.wheel.y;
             };
     }
+    for(auto &i: sprites)
+    {
+        sprite::draw_animation(i);
+    }
+    //It requires >= C++14
+    sprites.remove_if([](auto& i) { return !i.loop && i.times ==0; });
     SDL_RenderPresent(renderer);
 }
 
@@ -337,6 +340,87 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha)
 }
 
 }//closing namespace video
+
+namespace sprite
+{
+    void draw_animation(vsgl2_animation &animation)
+    {
+        if (ms_time() - animation.elapsed_time > animation.speed)
+        {
+            //Change animation
+            animation.current = (animation.current + 1)%(animation.end - animation.begin);
+            if (!animation.loop && animation.current == 0)
+                animation.times--;
+            animation.elapsed_time = ms_time();
+        }
+        if (animation.loop || animation.times != 0)
+        {
+            float dim_w = ((float)animation.sprite.w)/animation.sprite.columns - 1;
+            float dim_h = ((float)animation.sprite.h)/animation.sprite.rows + 2;
+            //cout << dim_w << " " << dim_h << endl;
+            //cout << (animation.current%animation.sprite.columns) << endl;
+            //cout << (animation.current/animation.sprite.columns) << endl;
+            SDL_Rect clip;
+            clip.x= dim_w * ((animation.begin + animation.current)%animation.sprite.columns);
+            clip.y = dim_h * ((animation.begin + animation.current)/animation.sprite.columns);
+            clip.w = dim_w;
+            clip.h = dim_h;
+            SDL_Rect sheet;
+            sheet.x= animation.x;
+            sheet.y = animation.y;
+            sheet.w = dim_w;//animation.sprite.w;
+            sheet.h = dim_h;//animation.sprite.h;
+
+            SDL_SetTextureBlendMode( animation.sprite.texture, SDL_BLENDMODE_BLEND );
+            SDL_SetTextureAlphaMod( animation.sprite.texture, 255);
+            SDL_RenderCopy(renderer, animation.sprite.texture,&clip,&sheet);
+        }
+    }
+
+    void start_animation(string image, int x, int y, int begin, int end, int speed, int times)
+    {
+        string information = image.substr(0, image.find(".")) + ".txt";
+        ifstream in(information);
+        if (!in)
+        {
+            SDL_Log("Manca il file delle informazioni sulla sprite: %s", information.c_str());
+            return;
+        }
+        if (images.find(image) == images.end())
+        {
+            SDL_Surface* s = IMG_Load(image.c_str());
+            if (s == NULL)
+                SDL_Log("Caricamento sprite fallito: %s", SDL_GetError() );
+            else
+            {
+                SDL_Texture *texture = SDL_CreateTextureFromSurface( renderer, s);
+                vsgl2_image im;
+                im.texture = texture;
+                im.alpha = 255;
+                images.insert(make_pair(image,im));
+                SDL_FreeSurface(s);
+            }
+        }
+        vsgl2_sprite sp;
+        sp.texture = images[image].texture;
+        in >> sp.rows  >> sp.columns >> sp.w >> sp.h;
+        vsgl2_animation animation;
+        animation.sprite = sp;
+        animation.begin = begin;
+        animation.end = end;
+        animation.x = x;
+        animation.y = y;
+        if (times == 0)
+            animation.loop = true;
+        else
+            animation.loop = false;
+        animation.times = times;
+        animation.speed = speed;
+        animation.current = 0;
+        animation.elapsed_time = ms_time();
+        sprites.push_back(animation);
+    }
+}
 
 namespace audio
 {

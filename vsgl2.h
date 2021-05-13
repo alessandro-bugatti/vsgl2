@@ -47,8 +47,38 @@
 
 using namespace std;
 
+
 namespace vsgl2
 {
+
+struct vsgl2_image
+{
+    SDL_Texture *texture;
+    uint8_t alpha;
+};
+
+struct vsgl2_sprite
+{
+    SDL_Texture *texture;
+    int rows;
+    int columns;
+    int w;
+    int h;
+};
+
+struct vsgl2_animation
+{
+    vsgl2_sprite sprite;
+    int x;
+    int y;
+    int begin;
+    int end;
+    int current;
+    int times;
+    unsigned int elapsed_time;
+    int speed;
+    bool loop;
+};
 
 #include "vsgl2_keycode.h"
 
@@ -218,6 +248,14 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha = 255);
 
 }//closing video namespace
 
+namespace sprite
+{
+
+    void draw_animation(vsgl2_animation &animation);
+
+    void start_animation(string image, int x, int y, int begin, int end, int speed, int times);
+
+}
 
 namespace audio
 {
