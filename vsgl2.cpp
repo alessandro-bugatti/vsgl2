@@ -430,6 +430,14 @@ namespace sprite
         sprites[id_sprite_generator] = animation;
         return id_sprite_generator;
     }
+    void move_animation(int id, int dx, int dy)
+    {
+        if (sprites.find(id) != sprites.end())
+        {
+            sprites[id].x += dx;
+            sprites[id].y += dy;
+        }
+    }
 }
 
 namespace audio
