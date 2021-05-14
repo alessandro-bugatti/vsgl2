@@ -250,10 +250,37 @@ void draw_image(string image, int x, int y, int w, int h, uint8_t alpha = 255);
 
 namespace sprite
 {
-
+/**
+    \brief Do not use this function, it is for internal use only, it is used
+    inside update function to draw all the animations
+    \param animation The animation to be drawn. It is passed by reference
+    because this function updates the state of the animation
+*/
     void draw_animation(vsgl2_animation &animation);
 
-    void start_animation(string image, int x, int y, int begin, int end, int speed, int times);
+/**
+    \brief Use to start an animation
+    An animation is a sheet composed by several pictures, each one inside
+    a virtual grid. This function draws these pictures, one after another,
+    in order to obtain an animation effect. The sheet (usuallly a PNG image) has to be divided in
+    N rows and M columns and these information (numbers of rows, numbers of
+    columns, image width and height) are stored inside a textual file with the
+    same name of the image, but with txt extension. For more information
+    see Lesson 600 about sprite
+    \param image The sheet containing all the pictures organized by rows
+    and columns. Usually is a PNG image with transparency
+    \param x The x coordinate of the upper left corner of the animation
+    inside the window coordinates
+    \param y The y coordinate of the upper left corner of the animation
+    inside the window coordinates
+    \param starting_frame The index of the first frame of the animation (included)
+    \param ending_frame The index of the last frame of the animation (not included)
+    \param speed The speed of the animation. It is expressed in milliseconds
+    between a frame and the next one, so a greater number means a slower animation
+    \param times The number of times that the full animation (from start to end)
+    is repeated
+*/
+    void start_animation(string image, int x, int y, int starting_frame, int ending_frame, int speed, int times);
 
 }
 
