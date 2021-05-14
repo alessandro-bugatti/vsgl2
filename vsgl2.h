@@ -279,9 +279,17 @@ namespace sprite
     between a frame and the next one, so a greater number means a slower animation
     \param times The number of times that the full animation (from start to end)
     is repeated
+    \return A unique identifier for this new animation. This number can
+    be used in other functions to move, flip or delete the animation
 */
-    void start_animation(string image, int x, int y, int starting_frame, int ending_frame, int speed, int times);
-
+    int start_animation(string image, int x, int y, int starting_frame, int ending_frame, int speed, int times);
+/**
+    \brief Use to move the animation identified by id
+    \param dx The movement along the x-axis, in pixels
+    \param dy The movement along the y-axis, in pixels
+    \warning If id doesn't exist, the function does nothing
+*/
+    void move_animation(int id, int dx, int dy);
 }
 
 namespace audio

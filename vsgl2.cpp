@@ -38,11 +38,12 @@ bool isDone = false;
 map<string, vsgl2_image> images;
 map<string, TTF_Font*> fonts;
 map<string, Mix_Chunk*> sounds;
-list<vsgl2_animation> sprites;
+map<int, vsgl2_animation> sprites;
 const Uint8* currentKeyStates;
 int mouseX, mouseY, mouseWheelX, mouseWheelY;
 Mix_Music *music;
 Color background_color;
+unsigned int id_sprite_generator = 0;
 //Variables for setting the drawing style of
 //the geometrical primitives (draw_line etc.)
 //in order to obtain persistence, e.g. each
@@ -215,12 +216,19 @@ void update()
                 mouseWheelY = e.wheel.y;
             };
     }
-    for(auto &i: sprites)
+    for(auto i = sprites.begin(); i != sprites.end();)
     {
-        sprite::draw_animation(i);
+        if (!i->second.loop && i->second.times == 0)
+            i = sprites.erase(i);
+        else
+        {
+            sprite::draw_animation(i->second);
+            i++;
+        }
+
     }
-    //It requires >= C++14
-    sprites.remove_if([](auto& i) { return !i.loop && i.times ==0; });
+
+    //sprites.remove_if([](auto& i) { return !i.loop && i.times ==0; });
     SDL_RenderPresent(renderer);
 }
 
@@ -377,14 +385,14 @@ namespace sprite
         }
     }
 
-    void start_animation(string image, int x, int y, int begin, int end, int speed, int times)
+    int start_animation(string image, int x, int y, int begin, int end, int speed, int times)
     {
         string information = image.substr(0, image.find(".")) + ".txt";
         ifstream in(information);
         if (!in)
         {
             SDL_Log("Manca il file delle informazioni sulla sprite: %s", information.c_str());
-            return;
+            return -1;
         }
         if (images.find(image) == images.end())
         {
@@ -418,7 +426,9 @@ namespace sprite
         animation.speed = speed;
         animation.current = 0;
         animation.elapsed_time = ms_time();
-        sprites.push_back(animation);
+        id_sprite_generator++;
+        sprites[id_sprite_generator] = animation;
+        return id_sprite_generator;
     }
 }
 
