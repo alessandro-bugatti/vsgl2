@@ -76,8 +76,9 @@ struct vsgl2_animation
     int current;
     int times;
     unsigned int elapsed_time;
-    int speed;
+    unsigned int speed;
     bool loop;
+    SDL_RendererFlip h_flip;
 };
 
 #include "vsgl2_keycode.h"
@@ -291,6 +292,33 @@ namespace sprite
     \warning If id doesn't exist, the function does nothing
 */
     void move_animation(int id, int dx, int dy);
+
+/**
+    \brief Use to toggle the horizontal flipping of the animation identified by id,
+    This function "mirrors" the original sprite along the vertical axis
+    i.e. if the image is this ->, after calling this function it becomes <-.
+    By calling this function twice, revert the effect and come back to the
+    original image.
+    \param id The unique animation id
+    \warning If id doesn't exist, the function does nothing
+*/
+    void toggle_flip_h_animation(int id);
+
+/**
+    \brief Use to flip the animation identified by id horizontally,
+    along the vertical axis
+    \param id The unique animation id
+    \warning If id doesn't exist, the function does nothing
+*/
+    void flip_h_animation(int id);
+
+/**
+    \brief Use to restore the original state of the animation identified by id horizontally,
+    about the flipping along the vertical axis
+    \param id The unique animation id
+    \warning If id doesn't exist, the function does nothing
+*/
+    void noflip_h_animation(int id);
 }
 
 namespace audio

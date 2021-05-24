@@ -379,7 +379,7 @@ namespace sprite
 
             SDL_SetTextureBlendMode( animation.sprite.texture, SDL_BLENDMODE_BLEND );
             SDL_SetTextureAlphaMod( animation.sprite.texture, 255);
-            SDL_RenderCopy(renderer, animation.sprite.texture,&clip,&sheet);
+            SDL_RenderCopyEx(renderer, animation.sprite.texture,&clip,&sheet, 0, NULL, animation.h_flip);
         }
     }
 
@@ -424,10 +424,12 @@ namespace sprite
         animation.speed = speed;
         animation.current = 0;
         animation.elapsed_time = ms_time();
+        animation.h_flip = SDL_FLIP_NONE;
         id_sprite_generator++;
         sprites[id_sprite_generator] = animation;
         return id_sprite_generator;
     }
+
     void move_animation(int id, int dx, int dy)
     {
         if (sprites.find(id) != sprites.end())
@@ -435,6 +437,29 @@ namespace sprite
             sprites[id].x += dx;
             sprites[id].y += dy;
         }
+    }
+
+    void toggle_flip_h_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+        {
+            if (sprites[id].h_flip == SDL_FLIP_NONE)
+                sprites[id].h_flip = SDL_FLIP_HORIZONTAL;
+            else
+                sprites[id].h_flip = SDL_FLIP_NONE;
+        }
+    }
+
+    void flip_h_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+           sprites[id].h_flip = SDL_FLIP_HORIZONTAL;
+    }
+
+    void noflip_h_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+            sprites[id].h_flip = SDL_FLIP_NONE;
     }
 }
 
