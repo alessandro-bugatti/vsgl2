@@ -227,8 +227,6 @@ void update()
         }
 
     }
-
-    //sprites.remove_if([](auto& i) { return !i.loop && i.times ==0; });
     SDL_RenderPresent(renderer);
 }
 

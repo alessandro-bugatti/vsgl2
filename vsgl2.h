@@ -285,6 +285,7 @@ namespace sprite
     int start_animation(string image, int x, int y, int starting_frame, int ending_frame, int speed, int times);
 /**
     \brief Use to move the animation identified by id
+    \param id The unique animation id
     \param dx The movement along the x-axis, in pixels
     \param dy The movement along the y-axis, in pixels
     \warning If id doesn't exist, the function does nothing
