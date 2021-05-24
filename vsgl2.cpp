@@ -379,7 +379,7 @@ namespace sprite
 
             SDL_SetTextureBlendMode( animation.sprite.texture, SDL_BLENDMODE_BLEND );
             SDL_SetTextureAlphaMod( animation.sprite.texture, 255);
-            SDL_RenderCopyEx(renderer, animation.sprite.texture,&clip,&sheet, 0, NULL, animation.h_flip);
+            SDL_RenderCopyEx(renderer, animation.sprite.texture,&clip,&sheet, 0, NULL, (SDL_RendererFlip)(animation.h_flip | animation.v_flip));
         }
     }
 
@@ -425,6 +425,7 @@ namespace sprite
         animation.current = 0;
         animation.elapsed_time = ms_time();
         animation.h_flip = SDL_FLIP_NONE;
+        animation.v_flip = SDL_FLIP_NONE;
         id_sprite_generator++;
         sprites[id_sprite_generator] = animation;
         return id_sprite_generator;
@@ -460,6 +461,29 @@ namespace sprite
     {
         if (sprites.find(id) != sprites.end())
             sprites[id].h_flip = SDL_FLIP_NONE;
+    }
+
+    void toggle_flip_v_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+        {
+            if (sprites[id].v_flip == SDL_FLIP_NONE)
+                sprites[id].v_flip = SDL_FLIP_VERTICAL;
+            else
+                sprites[id].v_flip = SDL_FLIP_NONE;
+        }
+    }
+
+    void flip_v_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+           sprites[id].v_flip = SDL_FLIP_VERTICAL;
+    }
+
+    void noflip_v_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+            sprites[id].v_flip = SDL_FLIP_NONE;
     }
 }
 
