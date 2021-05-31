@@ -295,6 +295,13 @@ namespace sprite
     void move_animation(int id, int dx, int dy);
 
 /**
+    \brief Use to remove the animation identified by id
+    \param id The unique animation id
+    \warning If id doesn't exist, the function does nothing
+*/
+    void remove_animation(int id);
+
+/**
     \brief Use to toggle the horizontal flipping of the animation identified by id,
     This function "mirrors" the original sprite along the vertical axis
     i.e. if the image is this ->, after calling this function it becomes <-.

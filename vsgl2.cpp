@@ -440,6 +440,12 @@ namespace sprite
         }
     }
 
+    void remove_animation(int id)
+    {
+        if (sprites.find(id) != sprites.end())
+            sprites.erase(sprites.find(id));
+    }
+
     void toggle_flip_h_animation(int id)
     {
         if (sprites.find(id) != sprites.end())
