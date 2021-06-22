@@ -10,6 +10,7 @@ This section is about how to install SDL and VSGL2 on your platform of choice an
 ## Installing SDL2 library
 The following subsections are referred to Windows, Linux and MacOS installation process, using CodeBlocks as IDE, it is absolutely possible to use other IDEs.
 
+
 **Update 2020-12-02**: the MingW compiler now included in CodeBlocks 20.03 is a 64-bit compiler, instead of the 32-bit version previously included in CodeBlocks. The next instructions are for both versions.
 
 ### Windows with Codeblocks versione < 20.03
